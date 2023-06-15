@@ -1,9 +1,8 @@
 #+title:AFM / SPM Components Diagrams
-#+property: header-args :mkdirp yes :dir code
+#+property: header-args :mkdirp yes :dir code :results value file
 
 * Overarching Diagram
-
-#+begin_src plantuml :tangle code/style.puml
+#+begin_src plantuml :tangle code/style.puml :exports none
   skinparam componentStyle uml2
   skinparam interface {
     backgroundColor<<input>> lightblue
@@ -39,8 +38,6 @@
 
 #+RESULTS:
 [[file:images/afm_components.png]]
-
-
 * Cantilever Subsystem
 ** Diagram
 
@@ -109,8 +106,6 @@
 
 #+RESULTS:
 [[file:images/scanning_subsystem.png]]
-
-
 ** Parameters
 
 | Grouping    | Parameter | Description                 | Units |
@@ -131,7 +126,6 @@
 |             |           | Scanning Speed              | m/s   |
 |             |           | Moving Speed (not scanning) | m/s   |
 |-------------+-----------+-----------------------------+-------|
-
 * Dynamic Mode Components
 ** Lock-In Amplifier
 *** Simple

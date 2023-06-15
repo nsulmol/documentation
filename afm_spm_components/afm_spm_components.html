@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-06-15 Thu 15:11 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AFM / SPM Components Diagrams</title>
+<meta name="author" content="Nick Sullivan" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">AFM / SPM Components Diagrams</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgf94b34f">1. Overarching Diagram</a></li>
+<li><a href="#org1beb354">2. Cantilever Subsystem</a>
+<ul>
+<li><a href="#org33ad74c">2.1. Diagram</a></li>
+<li><a href="#orgb9f076b">2.2. Parameters</a></li>
+</ul>
+</li>
+<li><a href="#orgbc4af57">3. Scanning Subsystem</a>
+<ul>
+<li><a href="#org838a373">3.1. Diagram</a></li>
+<li><a href="#orgaedbfb6">3.2. Parameters</a></li>
+</ul>
+</li>
+<li><a href="#orgd146643">4. Dynamic Mode Components</a>
+<ul>
+<li><a href="#org68a6339">4.1. Lock-In Amplifier</a>
+<ul>
+<li><a href="#org8bd3663">4.1.1. Simple</a></li>
+<li><a href="#org6a5dec0">4.1.2. Expanded</a></li>
+<li><a href="#org1ff2dd8">4.1.3. Parameters</a></li>
+</ul>
+</li>
+<li><a href="#org7f12756">4.2. Phase Locked Loop (PLL)</a>
+<ul>
+<li><a href="#org5d2330c">4.2.1. Simple</a></li>
+<li><a href="#org77a0357">4.2.2. Expanded</a></li>
+<li><a href="#orge36b668">4.2.3. Parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org7af0db6">5. Feedback Subsystem</a>
+<ul>
+<li><a href="#orgab2e898">5.1. Source Mixer</a>
+<ul>
+<li><a href="#org00bee3c">5.1.1. Simple</a></li>
+<li><a href="#orgb4fe657">5.1.2. Expanded</a></li>
+<li><a href="#orgf1e91ac">5.1.3. Parameters</a></li>
+</ul>
+</li>
+<li><a href="#orga47e1ff">5.2. PID Controller</a>
+<ul>
+<li><a href="#org2ed121a">5.2.1. Simple</a></li>
+<li><a href="#orgcf2a95b">5.2.2. Expanded</a></li>
+<li><a href="#org2f14681">5.2.3. Parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf94b34f" class="outline-2">
+<h2 id="orgf94b34f"><span class="section-number-2">1.</span> Overarching Diagram</h2>
+<div class="outline-text-2" id="text-1">
+
+<div id="org38695f6" class="figure">
+<p><img src="images/afm_components.png" alt="afm_components.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org1beb354" class="outline-2">
+<h2 id="org1beb354"><span class="section-number-2">2.</span> Cantilever Subsystem</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org33ad74c" class="outline-3">
+<h3 id="org33ad74c"><span class="section-number-3">2.1.</span> Diagram</h3>
+<div class="outline-text-3" id="text-2-1">
+
+<div id="orge7e7f38" class="figure">
+<p><img src="images/cantilever_subsystem.png" alt="cantilever_subsystem.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li>Is the piezo oscillator the same as the piezo on the sample? I.e., are we dealing with just one piezo, which we oscillate? I suppose the answer is yes&#x2026;</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb9f076b" class="outline-3">
+<h3 id="orgb9f076b"><span class="section-number-3">2.2.</span> Parameters</h3>
+<div class="outline-text-3" id="text-2-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Grouping</th>
+<th scope="col" class="org-left">Parameter</th>
+<th scope="col" class="org-left">Description</th>
+<th scope="col" class="org-left">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">PSPD</td>
+<td class="org-left">invOLS</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">m/V</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">Cantilever</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Spring Constant</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Resonant Frequency</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Q-Factor</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">Tip-Surface</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Tip-Surface Bias Voltage</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Bias Amplifier Gain</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Bias Amplifier Offset</td>
+<td class="org-left">V</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbc4af57" class="outline-2">
+<h2 id="orgbc4af57"><span class="section-number-2">3.</span> Scanning Subsystem</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org838a373" class="outline-3">
+<h3 id="org838a373"><span class="section-number-3">3.1.</span> Diagram</h3>
+<div class="outline-text-3" id="text-3-1">
+
+<div id="org215fef7" class="figure">
+<p><img src="images/scanning_subsystem.png" alt="scanning_subsystem.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgaedbfb6" class="outline-3">
+<h3 id="orgaedbfb6"><span class="section-number-3">3.2.</span> Parameters</h3>
+<div class="outline-text-3" id="text-3-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Grouping</th>
+<th scope="col" class="org-left">Parameter</th>
+<th scope="col" class="org-left">Description</th>
+<th scope="col" class="org-left">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Piezo</td>
+<td class="org-left">{3d}</td>
+<td class="org-left">Piezo Sensitivity</td>
+<td class="org-left">Ang/V</td>
+</tr>
+
+<tr>
+<td class="org-left">(out)</td>
+<td class="org-left">{3d}</td>
+<td class="org-left">Piezo Amplifier Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">{3d}</td>
+<td class="org-left">Piezo Amplifier Offset/Bias</td>
+<td class="org-left">V</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">LVDT</td>
+<td class="org-left">{3d}</td>
+<td class="org-left">LVDT Sensitivity</td>
+<td class="org-left">V/Ang</td>
+</tr>
+
+<tr>
+<td class="org-left">(in)</td>
+<td class="org-left">{3d}</td>
+<td class="org-left">LVDT Offset/Bias</td>
+<td class="org-left">V</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">Scan Params</td>
+<td class="org-left">{2d}</td>
+<td class="org-left">Maximum Scan Dimensions</td>
+<td class="org-left">m</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">{2d}</td>
+<td class="org-left">Current Scan Dimensions</td>
+<td class="org-left">m</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">{2d}</td>
+<td class="org-left">Current Scan Offset (x,y)</td>
+<td class="org-left">m</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">{2d}</td>
+<td class="org-left">Coordinate System Origin</td>
+<td class="org-left">m</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">ROI Angle (if applicable)</td>
+<td class="org-left">&deg;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Scan Direction</td>
+<td class="org-left">N/A</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Scanning Speed</td>
+<td class="org-left">m/s</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Moving Speed (not scanning)</td>
+<td class="org-left">m/s</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd146643" class="outline-2">
+<h2 id="orgd146643"><span class="section-number-2">4.</span> Dynamic Mode Components</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org68a6339" class="outline-3">
+<h3 id="org68a6339"><span class="section-number-3">4.1.</span> Lock-In Amplifier</h3>
+<div class="outline-text-3" id="text-4-1">
+</div>
+<div id="outline-container-org8bd3663" class="outline-4">
+<h4 id="org8bd3663"><span class="section-number-4">4.1.1.</span> Simple</h4>
+<div class="outline-text-4" id="text-4-1-1">
+
+<div id="org8b24f6d" class="figure">
+<p><img src="images/lockin_simple.png" alt="lockin_simple.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6a5dec0" class="outline-4">
+<h4 id="org6a5dec0"><span class="section-number-4">4.1.2.</span> Expanded</h4>
+<div class="outline-text-4" id="text-4-1-2">
+
+<div id="org7e53560" class="figure">
+<p><img src="images/lockin.png" alt="lockin.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1ff2dd8" class="outline-4">
+<h4 id="org1ff2dd8"><span class="section-number-4">4.1.3.</span> Parameters</h4>
+<div class="outline-text-4" id="text-4-1-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Grouping</th>
+<th scope="col" class="org-left">Parameter</th>
+<th scope="col" class="org-left">Description</th>
+<th scope="col" class="org-left">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Signal Amplitude</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Reference Frequency</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Averaging Period</td>
+<td class="org-left">cycles</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="outline-container-org7f12756" class="outline-3">
+<h3 id="org7f12756"><span class="section-number-3">4.2.</span> Phase Locked Loop (PLL)</h3>
+<div class="outline-text-3" id="text-4-2">
+</div>
+<div id="outline-container-org5d2330c" class="outline-4">
+<h4 id="org5d2330c"><span class="section-number-4">4.2.1.</span> Simple</h4>
+<div class="outline-text-4" id="text-4-2-1">
+
+<div id="org33e29e8" class="figure">
+<p><img src="images/pll_simple.png" alt="pll_simple.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org77a0357" class="outline-4">
+<h4 id="org77a0357"><span class="section-number-4">4.2.2.</span> Expanded</h4>
+<div class="outline-text-4" id="text-4-2-2">
+
+<div id="org109f198" class="figure">
+<p><img src="images/pll.png" alt="pll.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge36b668" class="outline-4">
+<h4 id="orge36b668"><span class="section-number-4">4.2.3.</span> Parameters</h4>
+<div class="outline-text-4" id="text-4-2-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Grouping</th>
+<th scope="col" class="org-left">Parameter</th>
+<th scope="col" class="org-left">Description</th>
+<th scope="col" class="org-left">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org7af0db6" class="outline-2">
+<h2 id="org7af0db6"><span class="section-number-2">5.</span> Feedback Subsystem</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orgab2e898" class="outline-3">
+<h3 id="orgab2e898"><span class="section-number-3">5.1.</span> Source Mixer</h3>
+<div class="outline-text-3" id="text-5-1">
+</div>
+<div id="outline-container-org00bee3c" class="outline-4">
+<h4 id="org00bee3c"><span class="section-number-4">5.1.1.</span> Simple</h4>
+<div class="outline-text-4" id="text-5-1-1">
+
+<div id="org4c8ebd1" class="figure">
+<p><img src="images/source_mixer_simple.png" alt="source_mixer_simple.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb4fe657" class="outline-4">
+<h4 id="orgb4fe657"><span class="section-number-4">5.1.2.</span> Expanded</h4>
+<div class="outline-text-4" id="text-5-1-2">
+
+<div id="org6f6c9a0" class="figure">
+<p><img src="images/source_mixer.png" alt="source_mixer.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf1e91ac" class="outline-4">
+<h4 id="orgf1e91ac"><span class="section-number-4">5.1.3.</span> Parameters</h4>
+<div class="outline-text-4" id="text-5-1-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Grouping</th>
+<th scope="col" class="org-left">Parameter</th>
+<th scope="col" class="org-left">Description</th>
+<th scope="col" class="org-left">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Input</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Conversion factor (Units-to-V)</td>
+<td class="org-left">x/V</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">Low-Pass Filter</td>
+<td class="org-left">f0</td>
+<td class="org-left">Cut-off Frequency</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">f0<sub>min</sub></td>
+<td class="org-left">Min. F0 (if adaptive)</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">f0<sub>max</sub></td>
+<td class="org-left">Max. F0 (if adaptive)</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">I<sub>crossover</sub></td>
+<td class="org-left">Current Crossover (if adaptive)</td>
+<td class="org-left">A</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">Transform</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Mode: 0:Off, 1:On, 2:Log, 4:IIR, 8:FUZZY</td>
+<td class="org-left">n/a</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Fuzzy-Mode Threshold Level (FUZZY Only)</td>
+<td class="org-left">V</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">Miscellaneous</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Reference Set-Point (fixed or provided by signal)</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Gi: gain applied to final signal i (before summing)</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga47e1ff" class="outline-3">
+<h3 id="orga47e1ff"><span class="section-number-3">5.2.</span> PID Controller</h3>
+<div class="outline-text-3" id="text-5-2">
+</div>
+<div id="outline-container-org2ed121a" class="outline-4">
+<h4 id="org2ed121a"><span class="section-number-4">5.2.1.</span> Simple</h4>
+<div class="outline-text-4" id="text-5-2-1">
+
+<div id="orgb7220d1" class="figure">
+<p><img src="images/pid_simple.png" alt="pid_simple.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcf2a95b" class="outline-4">
+<h4 id="orgcf2a95b"><span class="section-number-4">5.2.2.</span> Expanded</h4>
+<div class="outline-text-4" id="text-5-2-2">
+
+<div id="org8b21082" class="figure">
+<p><img src="images/pid.png" alt="pid.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2f14681" class="outline-4">
+<h4 id="org2f14681"><span class="section-number-4">5.2.3.</span> Parameters</h4>
+<div class="outline-text-4" id="text-5-2-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Grouping</th>
+<th scope="col" class="org-left">Parameter</th>
+<th scope="col" class="org-left">Description</th>
+<th scope="col" class="org-left">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Proportional Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Integral Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Derivative Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Nick Sullivan</p>
+<p class="date">Created: 2023-06-15 Thu 15:11</p>
+</div>
+</body>
+</html>
