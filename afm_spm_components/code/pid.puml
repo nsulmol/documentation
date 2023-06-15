@@ -1,38 +1,37 @@
 !include style.puml
+left to right direction
 
-interface "r(t)" as r_t
-interface "y(t)" as y_t
 interface "e(t)" <<input>> as e_t
 interface "u(t)" <<output>> as u_t
 storage "<latex>\Delta</latex>" as diff
 rectangle "Plant / Process" as proc
 
-r_t -d-> diff
-y_t -d-> diff
-diff -d-> e_t
-u_t -> proc
-proc -> y_t
+r_t --> diff
+y_t --> diff
+diff --> e_t
+u_t --> proc
+proc --> y_t
 
 !startsub pid
 component "PID Controller" as pid {
-  rectangle "<latex>\textbf{P}: K_p e(t)</latex>" as pid_p
-  rectangle "<latex>\textbf{I}: K_i \int_{0}^{t}e(\tau)d\tau</latex>" as pid_i
-  rectangle "<latex>\textbf{D}: K_d \frac{de(t)}{dt}</latex>" as pid_d
+  package " " <<layout>> as pid_blocks {
+    rectangle "<latex>\textbf{P}: K_p e(t)</latex>" as pid_p
+    rectangle "<latex>\textbf{I}: K_i \int_{0}^{t}e(\tau)d\tau</latex>" as pid_i
+    rectangle "<latex>\textbf{D}: K_d \frac{de(t)}{dt}</latex>" as pid_d
+
+    pid_p -[hidden]right- pid_i
+    pid_i -[hidden]right- pid_d
+  }
   storage "<latex>\sum</latex>" as sum
 
-  e_t -[hidden]down- pid
-  pid_p -[hidden]right- pid_i
-  pid_i -[hidden]right- pid_d
-  pid_i -[hidden]down- sum
+  e_t --> pid_p
+  e_t --> pid_i
+  e_t --> pid_d
 
-  e_t -> pid_p
-  e_t -> pid_i
-  e_t -> pid_d
+  pid_p --> sum
+  pid_i --> sum
+  pid_d --> sum
 
-  pid_p -> sum
-  pid_i -> sum
-  pid_d -> sum
-
-  sum -> u_t
+  sum --> u_t
 }
 !endsub

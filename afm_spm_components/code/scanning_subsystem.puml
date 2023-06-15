@@ -1,7 +1,7 @@
 !include style.puml
 
 !startsub component
-component "Scanning Subsystem" as scanning_subsystem_simple {
+component "Scanning Subsystem" as scanning_subsystem {
   component Sample as sample
   component Piezo as sample_piezo
   component LVDT as lvdt

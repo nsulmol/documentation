@@ -1,6 +1,10 @@
-skinparam componentStyle uml2
+!include style.puml
+package " " <<layout>> as afm {
 !includesub cantilever_subsystem.puml!component
 !includesub scanning_subsystem.puml!component
+
+cantilever_subsystem -[hidden]down- scanning_subsystem
+}
 component "Dynamic Mode Components" as dynamic_mode_components {
   !includesub lockin_simple.puml!component
   !includesub pll_simple.puml!component

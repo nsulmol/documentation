@@ -2,8 +2,8 @@
 left to right direction
 
 !startsub component
-interface "<latex>S_{exc}[\sim]</latex>" <<input>> as s_exc
-interface "<latex>S_{res}[\sim]</latex>" <<output>> as s_res
+interface "<latex>S_{res}[\sim]</latex>" <<input>> as s_res
+interface "<latex>S_{exc}[\sim]</latex>" <<output>> as s_exc
 
 component "Phase Locked Loop" as pll {
   component "Phase/\nAmplitude\nDetector" as pad
@@ -11,11 +11,11 @@ component "Phase Locked Loop" as pll {
 
   package " " <<layout>> as del_pid_blocks {
      package " " <<layout>> as del_pid_block_amp {
-       interface "<latex>dA_{res}</latex>" <<output>> as damp_res
+       interface "<latex>dA_{res}[-]</latex>" <<output>> as damp_res
        interface "<latex>A_{sp}</latex>" <<param>> as amp_sp
        storage "<latex>\Delta</latex>" as del_amp
-       rectangle "PID" as pid_amp
-       interface "<latex>A_{exc}</latex>" <<output>> as amp_exc
+       rectangle "PID Controller" as pid_amp
+       interface "<latex>A_{exc}[-]</latex>" <<output>> as amp_exc
 
        damp_res --> del_amp
        amp_sp --> del_amp
@@ -24,11 +24,11 @@ component "Phase Locked Loop" as pll {
      }
 
      package " " <<layout>> as del_pid_block_phase {
-       interface "<latex>d\varphi_{res}</latex>" <<output>> as dphase_res
+       interface "<latex>d\varphi_{res}[-]</latex>" <<output>> as dphase_res
        interface "<latex>\varphi_{sp}</latex>" <<param>> as phase_sp
        storage "<latex>\Delta</latex>" as del_phase
-       rectangle "PID" as pid_phase
-       interface "<latex>\varphi_{exc}</latex>" <<output>> as phase_exc
+       rectangle "PID Controller" as pid_phase
+       interface "<latex>\varphi_{exc}[-]</latex>" <<output>> as phase_exc
 
        dphase_res --> del_phase
        phase_sp --> del_phase
@@ -45,5 +45,10 @@ component "Phase Locked Loop" as pll {
   phase_exc --> sine_gen
   sine_gen --> s_exc
 }
+
+component "Resonator" as resonator
+s_exc -> resonator
+s_exc -u-> pad
+resonator -u-> s_res
 
 !endsub
