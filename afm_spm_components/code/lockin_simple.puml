@@ -1,0 +1,12 @@
+!include style.puml
+
+!startsub component
+component "Lock-In Amplifier" as lockin_simple
+interface "<latex>U_{in}[\sim]</latex>" <<input>> as u_in
+interface "<latex>V_{sig}[-]</latex>" <<output>> as v_sig
+interface "<latex>\varphi[-]</latex>" <<output>> as phi
+
+u_in -> lockin_simple
+lockin_simple -r-> v_sig
+lockin_simple -d-> phi
+!endsub

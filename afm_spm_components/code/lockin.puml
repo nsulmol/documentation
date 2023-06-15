@@ -1,0 +1,41 @@
+!include style.puml
+
+interface "<latex>U_{in}[\sim]</latex>" <<input>> as u_in
+
+component "Lock-In Amplifier" as lockin {
+  interface "<latex>\omega_{ref}</latex>" <<param>> as ang_freq
+  rectangle "Oscillator" as sine_gen
+  rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator1
+  rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator2
+  storage X as x1
+  storage X as x2
+  rectangle "<latex>|\textbf{X+Y}|_2</latex>" as l2_norm
+  rectangle "<latex>\theta=atan(\frac{\textbf{Y}}{\textbf{X}})</latex>" as phase_calc
+
+  u_in -r-> x1
+  u_in -r-> x2
+  ang_freq -d-> sine_gen
+  sine_gen -> x1: "<latex>sin(\omega t)</latex>"
+  sine_gen -> x2: "<latex>cos(\omega t)</latex>"
+  x1 -r-> integrator1
+  x2 -r-> integrator2
+
+  integrator1 -r-> l2_norm
+  integrator2 -r-> l2_norm
+  integrator1 -r-> phase_calc
+  integrator2 -r-> phase_calc
+
+  ' Forcing positioning'
+  l2_norm -[hidden]down- phase_calc
+  'sine_gen -[hidden]up- u_in
+  sine_gen -[hidden]right- x1
+  sine_gen -[hidden]right- x2
+  integrator1 -[hidden]down- integrator2
+  x1 -[hidden]down- x2
+}
+
+interface "<latex>V_{sig}[-]</latex>" <<output>> as v_sig
+interface "<latex>\varphi[-]</latex>" <<output>> as phi
+
+l2_norm -> v_sig
+phase_calc -> phi

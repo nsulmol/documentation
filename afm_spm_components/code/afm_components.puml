@@ -1,0 +1,13 @@
+skinparam componentStyle uml2
+!includesub cantilever_subsystem.puml!component
+!includesub scanning_subsystem.puml!component
+component "Dynamic Mode Components" as dynamic_mode_components {
+  !includesub lockin_simple.puml!component
+  !includesub pll_simple.puml!component
+}
+component "Feedback Subsystem" as feedback_subsystem {
+  !includesub source_mixer_simple.puml!component
+  !includesub pid_simple.puml!component
+
+  s_del -> e_t
+}

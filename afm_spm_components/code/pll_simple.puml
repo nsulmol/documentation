@@ -1,0 +1,11 @@
+!include style.puml
+!startsub component
+component "Phase Locked Loop" as pll_simple
+interface "<latex>S_{exc}[\sim]</latex>" <<output>> as s_exc
+interface "<latex>S_{res}[\sim]</latex>" <<input>> as s_res
+interface "<latex>\begin{bmatrix}dA_{res} \\ d\varphi_{res} \\ A_{exc} \\ \varphi_{exc} \end{bmatrix}[-]</latex>" <<output>> as params_out
+
+s_res -r-> pll_simple
+pll_simple -d-> s_exc
+pll_simple -r-> params_out
+!endsub

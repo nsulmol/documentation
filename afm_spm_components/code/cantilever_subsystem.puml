@@ -1,0 +1,18 @@
+!include style.puml
+
+!startsub component
+component "Cantilever Subsystem" as cantilever_subsystem {
+  component Laser as laser
+  component Cantilever as cantilever
+  component PSPD as pspd
+  component "Piezo Oscillator" as cantilever_piezo
+  interface "y/z?" <<output>> as pspd_out
+  interface "y/z?" <<input>> as cant_piezo_in
+
+  laser -d-> cantilever
+  cantilever -u-> pspd
+  cantilever_piezo -u-> cantilever
+  pspd -r-> pspd_out
+  cant_piezo_in -l-> cantilever_piezo
+}
+!endsub

@@ -1,0 +1,16 @@
+!include style.puml
+
+!startsub component
+component "Scanning Subsystem" as scanning_subsystem_simple {
+  component Sample as sample
+  component Piezo as sample_piezo
+  component LVDT as lvdt
+  interface "x/y/z" <<input>> as sample_piezo_in
+  interface "x/y/z" <<output>> as lvdt_out
+
+  sample_piezo -u-> sample
+  sample_piezo -d-> lvdt
+  lvdt -r-> lvdt_out
+  sample_piezo_in -l-> sample_piezo
+}
+!endsub

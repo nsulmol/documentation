@@ -1,0 +1,12 @@
+skinparam componentStyle uml2
+skinparam interface {
+  backgroundColor<<input>> lightblue
+  backgroundColor<<output>> pink
+  backgroundColor<<param>> darkseagreen
+}
+
+skinparam package {
+  borderColor<<layout>> transparent
+}
+
+hide stereotype

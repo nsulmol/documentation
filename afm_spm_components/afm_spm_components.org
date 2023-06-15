@@ -1,0 +1,448 @@
+#+title:AFM / SPM Components Diagrams
+#+property: header-args :mkdirp yes :dir code
+
+* Overarching Diagram
+
+#+begin_src plantuml :tangle code/style.puml
+  skinparam componentStyle uml2
+  skinparam interface {
+    backgroundColor<<input>> lightblue
+    backgroundColor<<output>> pink
+    backgroundColor<<param>> darkseagreen
+  }
+
+  skinparam package {
+    borderColor<<layout>> transparent
+  }
+
+  hide stereotype
+#+end_src
+
+#+begin_src plantuml :file ../images/afm_components.png :tangle code/afm_components.puml
+  !include style.puml
+  !includesub cantilever_subsystem.puml!component
+  !includesub scanning_subsystem.puml!component
+  component "Dynamic Mode Components" as dynamic_mode_components {
+    !includesub lockin_simple.puml!component
+    !includesub pll_simple.puml!component
+  }
+  component "Feedback Subsystem" as feedback_subsystem {
+    !includesub source_mixer_simple.puml!component
+    !includesub pid_simple.puml!component
+
+    s_del -> e_t
+  }
+
+#+end_src
+
+#+RESULTS:
+[[file:images/afm_components.png]]
+
+
+* Cantilever Subsystem
+** Diagram
+
+#+begin_src plantuml :file ../images/cantilever_subsystem.png :tangle code/cantilever_subsystem.puml
+  !include style.puml
+
+  !startsub component
+  component "Cantilever Subsystem" as cantilever_subsystem {
+    component Laser as laser
+    component Cantilever as cantilever
+    component PSPD as pspd
+    component "Piezo Oscillator" as cantilever_piezo
+    interface "y/z?" <<output>> as pspd_out
+    interface "y/z?" <<input>> as cant_piezo_in
+
+    laser -d-> cantilever
+    cantilever -u-> pspd
+    cantilever_piezo -u-> cantilever
+    pspd -r-> pspd_out
+    cant_piezo_in -l-> cantilever_piezo
+  }
+  !endsub
+#+end_src
+
+#+RESULTS:
+[[file:images/cantilever_subsystem.png]]
+
+- Is the piezo oscillator the same as the piezo on the sample? I.e., are we dealing with just one piezo, which we oscillate? I suppose the answer is yes...
+
+** Parameters
+
+| Grouping    | Parameter | Description              | Units |
+|-------------+-----------+--------------------------+-------|
+| PSPD        | invOLS    |                          | m/V   |
+|-------------+-----------+--------------------------+-------|
+| Cantilever  |           | Spring Constant          |       |
+|             |           | Resonant Frequency       |       |
+|             |           | Q-Factor                 |       |
+|-------------+-----------+--------------------------+-------|
+| Tip-Surface |           | Tip-Surface Bias Voltage | V     |
+|             |           | Bias Amplifier Gain      | V     |
+|             |           | Bias Amplifier Offset    | V     |
+|-------------+-----------+--------------------------+-------|
+
+* Scanning Subsystem
+** Diagram
+
+#+begin_src plantuml :file ../images/scanning_subsystem.png :tangle code/scanning_subsystem.puml
+  !include style.puml
+
+  !startsub component
+  component "Scanning Subsystem" as scanning_subsystem_simple {
+    component Sample as sample
+    component Piezo as sample_piezo
+    component LVDT as lvdt
+    interface "x/y/z" <<input>> as sample_piezo_in
+    interface "x/y/z" <<output>> as lvdt_out
+
+    sample_piezo -u-> sample
+    sample_piezo -d-> lvdt
+    lvdt -r-> lvdt_out
+    sample_piezo_in -l-> sample_piezo
+  }
+  !endsub
+#+end_src
+
+#+RESULTS:
+[[file:images/scanning_subsystem.png]]
+
+
+** Parameters
+
+| Grouping    | Parameter | Description                 | Units |
+|-------------+-----------+-----------------------------+-------|
+| Piezo       | {3d}      | Piezo Sensitivity           | Ang/V |
+| (out)       | {3d}      | Piezo Amplifier Gain        | V/V   |
+|             | {3d}      | Piezo Amplifier Offset/Bias | V     |
+|-------------+-----------+-----------------------------+-------|
+| LVDT        | {3d}      | LVDT Sensitivity            | V/Ang |
+| (in)        | {3d}      | LVDT Offset/Bias            | V     |
+|-------------+-----------+-----------------------------+-------|
+| Scan Params | {2d}      | Maximum Scan Dimensions     | m     |
+|             | {2d}      | Current Scan Dimensions     | m     |
+|             | {2d}      | Current Scan Offset (x,y)   | m     |
+|             | {2d}      | Coordinate System Origin    | m     |
+|             |           | ROI Angle (if applicable)   | \deg  |
+|             |           | Scan Direction              | N/A   |
+|             |           | Scanning Speed              | m/s   |
+|             |           | Moving Speed (not scanning) | m/s   |
+|-------------+-----------+-----------------------------+-------|
+
+* Dynamic Mode Components
+** Lock-In Amplifier
+*** Simple
+
+#+begin_src plantuml :file ../images/lockin_simple.png :tangle code/lockin_simple.puml
+  !include style.puml
+
+  !startsub component
+  component "Lock-In Amplifier" as lockin_simple
+  interface "<latex>U_{in}[\sim]</latex>" <<input>> as u_in
+  interface "<latex>V_{sig}[-]</latex>" <<output>> as v_sig
+  interface "<latex>\varphi[-]</latex>" <<output>> as phi
+
+  u_in -> lockin_simple
+  lockin_simple -r-> v_sig
+  lockin_simple -d-> phi
+  !endsub
+#+end_src
+
+#+RESULTS:
+[[file:images/lockin_simple.png]]
+
+*** Expanded
+
+#+begin_src plantuml :file ../images/lockin.png :tangle code/lockin.puml
+  !include style.puml
+
+  interface "<latex>U_{in}[\sim]</latex>" <<input>> as u_in
+
+  component "Lock-In Amplifier" as lockin {
+    interface "<latex>\omega_{ref}</latex>" <<param>> as ang_freq
+    rectangle "Oscillator" as sine_gen
+    rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator1
+    rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator2
+    storage X as x1
+    storage X as x2
+    rectangle "<latex>|\textbf{X+Y}|_2</latex>" as l2_norm
+    rectangle "<latex>\theta=atan(\frac{\textbf{Y}}{\textbf{X}})</latex>" as phase_calc
+
+    u_in -r-> x1
+    u_in -r-> x2
+    ang_freq -d-> sine_gen
+    sine_gen -> x1: "<latex>sin(\omega t)</latex>"
+    sine_gen -> x2: "<latex>cos(\omega t)</latex>"
+    x1 -r-> integrator1
+    x2 -r-> integrator2
+
+    integrator1 -r-> l2_norm
+    integrator2 -r-> l2_norm
+    integrator1 -r-> phase_calc
+    integrator2 -r-> phase_calc
+
+    ' Forcing positioning'
+    l2_norm -[hidden]down- phase_calc
+    'sine_gen -[hidden]up- u_in
+    sine_gen -[hidden]right- x1
+    sine_gen -[hidden]right- x2
+    integrator1 -[hidden]down- integrator2
+    x1 -[hidden]down- x2
+  }
+
+  interface "<latex>V_{sig}[-]</latex>" <<output>> as v_sig
+  interface "<latex>\varphi[-]</latex>" <<output>> as phi
+
+  l2_norm -> v_sig
+  phase_calc -> phi
+#+end_src
+
+#+RESULTS:
+[[file:images/lockin.png]]
+*** Parameters
+
+| Grouping | Parameter | Description         | Units  |
+|----------+-----------+---------------------+--------|
+|          |           | Signal Amplitude    | V      |
+|          |           | Reference Frequency | Hz     |
+|          |           | Averaging Period    | cycles |
+|----------+-----------+---------------------+--------|
+** Phase Locked Loop (PLL)
+*** Simple
+
+#+begin_src plantuml :file ../images/pll_simple.png :tangle code/pll_simple.puml
+  !include style.puml
+  !startsub component
+  component "Phase Locked Loop" as pll_simple
+  interface "<latex>S_{exc}[\sim]</latex>" <<output>> as s_exc
+  interface "<latex>S_{res}[\sim]</latex>" <<input>> as s_res
+  interface "<latex>\begin{bmatrix}dA_{res} \\ d\varphi_{res} \\ A_{exc} \\ \varphi_{exc} \end{bmatrix}[-]</latex>" <<output>> as params_out
+
+  s_res -r-> pll_simple
+  pll_simple -d-> s_exc
+  pll_simple -r-> params_out
+  !endsub
+#+end_src
+
+#+RESULTS:
+[[file:images/pll_simple.png]]
+
+*** Expanded
+
+#+begin_src plantuml :file ../images/pll.png :tangle code/pll.puml
+  !include style.puml
+  left to right direction
+
+  !startsub component
+  interface "<latex>S_{res}[\sim]</latex>" <<input>> as s_res
+  interface "<latex>S_{exc}[\sim]</latex>" <<output>> as s_exc
+
+  component "Phase Locked Loop" as pll {
+    component "Phase/\nAmplitude\nDetector" as pad
+    component "Oscillator" as sine_gen
+
+    package " " <<layout>> as del_pid_blocks {
+       package " " <<layout>> as del_pid_block_amp {
+         interface "<latex>dA_{res}[-]</latex>" <<output>> as damp_res
+         interface "<latex>A_{sp}</latex>" <<param>> as amp_sp
+         storage "<latex>\Delta</latex>" as del_amp
+         rectangle "PID Controller" as pid_amp
+         interface "<latex>A_{exc}[-]</latex>" <<output>> as amp_exc
+
+         damp_res --> del_amp
+         amp_sp --> del_amp
+         del_amp --> pid_amp
+         pid_amp --> amp_exc
+       }
+
+       package " " <<layout>> as del_pid_block_phase {
+         interface "<latex>d\varphi_{res}[-]</latex>" <<output>> as dphase_res
+         interface "<latex>\varphi_{sp}</latex>" <<param>> as phase_sp
+         storage "<latex>\Delta</latex>" as del_phase
+         rectangle "PID Controller" as pid_phase
+         interface "<latex>\varphi_{exc}[-]</latex>" <<output>> as phase_exc
+
+         dphase_res --> del_phase
+         phase_sp --> del_phase
+         del_phase --> pid_phase
+         pid_phase --> phase_exc
+         }
+    }
+
+    s_res --> pad
+    pad --> damp_res
+    pad --> dphase_res
+
+    amp_exc --> sine_gen
+    phase_exc --> sine_gen
+    sine_gen --> s_exc
+  }
+
+  component "Resonator" as resonator
+  s_exc -> resonator
+  s_exc -u-> pad
+  resonator -u-> s_res
+
+  !endsub
+#+end_src
+
+#+RESULTS:
+[[file:images/pll.png]]
+
+*** Parameters
+
+| Grouping | Parameter | Description | Units |
+|----------+-----------+-------------+-------|
+|          |           |             |       |
+|          |           |             |       |
+* Feedback Subsystem
+** Source Mixer
+*** Simple
+#+begin_src plantuml :file ../images/source_mixer_simple.png :tangle code/source_mixer_simple.puml
+  !include style.puml
+
+  !startsub component
+  component "Source Mixer" as source_mixer_simple
+  interface "<latex>y_{[0:N]}</latex>" <<input>> as y_ts
+  ' FIX ME I SHOULD NOT BE HERE!!!'
+  'interface "<latex>r_{[0:N]}</latex>" <<param>> as r_ts
+  interface "<latex>s_{\Delta}</latex>" <<output>> as s_del
+
+  y_ts -> source_mixer_simple
+  'r_ts -u-> source_mixer_simple
+  source_mixer_simple -> s_del
+  !endsub
+
+#+end_src
+
+#+RESULTS:
+[[file:images/source_mixer_simple.png]]
+
+*** Expanded
+
+#+begin_src plantuml :file ../images/source_mixer.png :tangle code/source_mixer.puml
+  !include style.puml
+
+  !startsub component
+  interface "<latex>y_{[0:N]}</latex>" <<input>> as y_ts
+
+  component "Source Mixer" as source_mixer {
+    rectangle "<latex>LPF_i</latex>" as lpf
+    rectangle "<latex>TR_i</latex>" as tr
+    storage "<latex>\Delta</latex>" as delta
+    interface "<latex>r_{[0:N]}</latex>" <<param>> as r_ts
+    interface "<latex>G_i</latex>" <<param>> as g_i
+    storage "X" as gain
+
+    lpf -> tr
+    tr -> delta
+    r_ts -d-> delta
+    delta -> gain
+    g_i -u-> gain
+  }
+
+  y_ts -r-> lpf
+  source_mixer -[hidden]left- y_ts
+
+  storage "<latex>\textbf{\Sigma}</latex>" as sum
+  interface "<latex>s_{\Delta}(t)</latex>" <<output>> as s_del
+
+  gain -> sum
+  sum -> s_del
+ !endsub
+
+#+end_src
+
+*** Parameters
+
+| Grouping        | Parameter   | Description                                         | Units |
+|-----------------+-------------+-----------------------------------------------------+-------|
+| Input           |             | Conversion factor (Units-to-V)                      | x/V   |
+|-----------------+-------------+-----------------------------------------------------+-------|
+| Low-Pass Filter | f0          | Cut-off Frequency                                   | Hz    |
+|                 | f0_min      | Min. F0 (if adaptive)                               | Hz    |
+|                 | f0_max      | Max. F0 (if adaptive)                               | Hz    |
+|                 | I_crossover | Current Crossover (if adaptive)                     | A     |
+|-----------------+-------------+-----------------------------------------------------+-------|
+| Transform       |             | Mode: 0:Off, 1:On, 2:Log, 4:IIR, 8:FUZZY            | n/a   |
+|                 |             | Fuzzy-Mode Threshold Level (FUZZY Only)             | V     |
+|-----------------+-------------+-----------------------------------------------------+-------|
+| Miscellaneous   |             | Reference Set-Point (fixed or provided by signal)   | V     |
+|                 |             | Gi: gain applied to final signal i (before summing) |       |
+|-----------------+-------------+-----------------------------------------------------+-------|
+
+** PID Controller
+*** Simple
+
+#+begin_src plantuml :file ../images/pid_simple.png :tangle code/pid_simple.puml
+  !include style.puml
+
+  !startsub component
+  interface "e(t)" <<input>> as e_t
+  interface "u(t)" <<output>> as u_t
+  component "PID Controller" as pid_simple
+
+  e_t -> pid_simple
+  pid_simple -> u_t
+  !endsub
+
+#+end_src
+
+#+RESULTS:
+[[file:images/pid_simple.png]]
+
+*** Expanded
+
+#+begin_src plantuml :file ../images/pid.png :tangle code/pid.puml
+  !include style.puml
+
+  interface "r(t)" as r_t
+  interface "y(t)" as y_t
+  interface "e(t)" <<input>> as e_t
+  interface "u(t)" <<output>> as u_t
+  storage "<latex>\Delta</latex>" as diff
+  rectangle "Plant / Process" as proc
+
+  r_t -d-> diff
+  y_t -d-> diff
+  diff -d-> e_t
+  u_t -> proc
+  proc -> y_t
+
+  !startsub pid
+  component "PID Controller" as pid {
+    rectangle "<latex>\textbf{P}: K_p e(t)</latex>" as pid_p
+    rectangle "<latex>\textbf{I}: K_i \int_{0}^{t}e(\tau)d\tau</latex>" as pid_i
+    rectangle "<latex>\textbf{D}: K_d \frac{de(t)}{dt}</latex>" as pid_d
+    storage "<latex>\sum</latex>" as sum
+
+    e_t -[hidden]down- pid
+    pid_p -[hidden]right- pid_i
+    pid_i -[hidden]right- pid_d
+    pid_i -[hidden]down- sum
+
+    e_t -> pid_p
+    e_t -> pid_i
+    e_t -> pid_d
+
+    pid_p -> sum
+    pid_i -> sum
+    pid_d -> sum
+
+    sum -> u_t
+  }
+  !endsub
+  #+end_src
+
+#+RESULTS:
+[[file:images/pid.png]]
+
+*** Parameters
+
+| Grouping | Parameter | Description       | Units |
+|----------+-----------+-------------------+-------|
+|          |           | Proportional Gain | V/V   |
+|          |           | Integral Gain     | V/V   |
+|          |           | Derivative Gain   | V/V   |
+|----------+-----------+-------------------+-------|

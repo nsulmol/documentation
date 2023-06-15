@@ -1,0 +1,49 @@
+!include style.puml
+left to right direction
+
+!startsub component
+interface "<latex>S_{exc}[\sim]</latex>" <<input>> as s_exc
+interface "<latex>S_{res}[\sim]</latex>" <<output>> as s_res
+
+component "Phase Locked Loop" as pll {
+  component "Phase/\nAmplitude\nDetector" as pad
+  component "Oscillator" as sine_gen
+
+  package " " <<layout>> as del_pid_blocks {
+     package " " <<layout>> as del_pid_block_amp {
+       interface "<latex>dA_{res}</latex>" <<output>> as damp_res
+       interface "<latex>A_{sp}</latex>" <<param>> as amp_sp
+       storage "<latex>\Delta</latex>" as del_amp
+       rectangle "PID" as pid_amp
+       interface "<latex>A_{exc}</latex>" <<output>> as amp_exc
+
+       damp_res --> del_amp
+       amp_sp --> del_amp
+       del_amp --> pid_amp
+       pid_amp --> amp_exc
+     }
+
+     package " " <<layout>> as del_pid_block_phase {
+       interface "<latex>d\varphi_{res}</latex>" <<output>> as dphase_res
+       interface "<latex>\varphi_{sp}</latex>" <<param>> as phase_sp
+       storage "<latex>\Delta</latex>" as del_phase
+       rectangle "PID" as pid_phase
+       interface "<latex>\varphi_{exc}</latex>" <<output>> as phase_exc
+
+       dphase_res --> del_phase
+       phase_sp --> del_phase
+       del_phase --> pid_phase
+       pid_phase --> phase_exc
+       }
+  }
+
+  s_res --> pad
+  pad --> damp_res
+  pad --> dphase_res
+
+  amp_exc --> sine_gen
+  phase_exc --> sine_gen
+  sine_gen --> s_exc
+}
+
+!endsub

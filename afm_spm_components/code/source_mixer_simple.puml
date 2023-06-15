@@ -1,0 +1,13 @@
+!include style.puml
+
+!startsub component
+component "Source Mixer" as source_mixer_simple
+interface "<latex>y_{[0-N]}</latex>" <<input>> as y_ts
+' FIX ME I SHOULD NOT BE HERE!!!'
+'interface "<latex>r_{[0-N]}</latex>" <<param>> as r_ts
+interface "<latex>s_{\Delta}</latex>" <<output>> as s_del
+
+y_ts -> source_mixer_simple
+'r_ts -u-> source_mixer_simple
+source_mixer_simple -> s_del
+!endsub

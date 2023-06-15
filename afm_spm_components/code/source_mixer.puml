@@ -1,0 +1,29 @@
+!include style.puml
+
+ !startsub component
+ interface "<latex>y_{[0-N]}</latex>" <<input>> as y_ts
+
+ component "Source Mixer" as source_mixer {
+   rectangle "<latex>LPF_i</latex>" as lpf
+   rectangle "<latex>TR_i</latex>" as tr
+   storage "<latex>\Delta</latex>" as delta
+   interface "<latex>r_{[0-N]}</latex>" <<param>> as r_ts
+   interface "<latex>G_i</latex>" <<param>> as g_i
+   storage "X" as gain
+
+   lpf -> tr
+   tr -> delta
+   r_ts -d-> delta
+   delta -> gain
+   g_i -u-> gain
+ }
+
+ y_ts -r-> lpf
+ source_mixer -[hidden]left- y_ts
+
+ storage "<latex>\textbf{\Sigma}</latex>" as sum
+ interface "<latex>s_{\Delta}(t)</latex>" <<output>> as s_del
+
+ gain -> sum
+ sum -> s_del
+!endsub
