@@ -3,6 +3,8 @@ left to right direction
 
 interface "e(t)" <<input>> as e_t
 interface "u(t)" <<output>> as u_t
+interface "r(t)" as r_t
+interface "y(t)" as y_t
 storage "<latex>\Delta</latex>" as diff
 rectangle "Plant / Process" as proc
 

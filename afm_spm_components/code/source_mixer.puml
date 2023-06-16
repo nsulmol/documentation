@@ -2,10 +2,10 @@
  left to right direction
 
  !startsub component
- interface "<latex>y_{[0:N]}</latex>" <<input>> as y_ts
+ interface "<latex>S_{in[0:N]}</latex>" <<input>> as y_ts
 
  component "Source Mixer" as source_mixer {
-   rectangle "<&layers>" as single_source_block #line:grey;line.dashed {
+   rectangle "\n<&layers>" as single_source_block #line:grey;line.dashed {
      rectangle "<latex>LPF_i</latex>" as lpf
      rectangle "<latex>TR_i</latex>" as tr
      storage "<latex>\Delta</latex>" as delta
@@ -24,8 +24,8 @@
  y_ts --> lpf
 
  storage "<latex>\textbf{\Sigma}</latex>" as sum
- interface "<latex>s_{\Delta}(t)</latex>" <<output>> as s_del
+ interface "<latex>S_{\Delta}(t)</latex>" <<output>> as s_del
 
- gain --> sum
+ gain --> sum: "<&layers>\n"
  sum --> s_del
 !endsub

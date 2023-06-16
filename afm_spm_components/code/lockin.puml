@@ -1,5 +1,5 @@
 !include style.puml
-'left to right direction
+left to right direction
 
 interface "<latex>U_{in}[\sim]</latex>" <<input>> as u_in
 
@@ -17,7 +17,7 @@ component "Lock-In Amplifier" as lockin {
       storage X as x_sin
       rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator_sin
 
-      u_in -> x_sin
+      u_in --> x_sin
       sine_gen --> x_sin: "<latex>sin(\omega t)</latex>"
       x_sin --> integrator_sin
     }
@@ -26,7 +26,7 @@ component "Lock-In Amplifier" as lockin {
       storage X as x_cos
       rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator_cos
 
-      u_in -> x_cos
+      u_in --> x_cos
       sine_gen --> x_cos: "<latex>cos(\omega t)</latex>"
       x_cos --> integrator_cos
     }

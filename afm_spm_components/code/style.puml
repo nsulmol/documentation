@@ -9,4 +9,8 @@ skinparam package {
   borderColor<<layout>> transparent
 }
 
+skinparam defaultTextAlignment<<right>> right
+skinparam defaultTextAlignment<<left>> left
+skinparam defaultTextAlignment<<center>> center
+
 hide stereotype

@@ -1,5 +1,6 @@
 #+title:AFM / SPM Components Diagrams
 #+property: header-args :mkdirp yes :dir code :results value file
+#+options: toc:nil
 
 * Overarching Diagram
 #+begin_src plantuml :tangle code/style.puml :exports none
@@ -14,32 +15,45 @@
     borderColor<<layout>> transparent
   }
 
+  skinparam defaultTextAlignment<<right>> right
+  skinparam defaultTextAlignment<<left>> left
+  skinparam defaultTextAlignment<<center>> center
+
   hide stereotype
 #+end_src
 
 #+begin_src plantuml :file ../images/afm_components.png :tangle code/afm_components.puml
   !include style.puml
 
-  !includesub cantilever_subsystem.puml!component
-  !includesub scanning_subsystem.puml!component
+  package " " <<layout>> as afm_hardware {
+    !includesub cantilever_subsystem.puml!component
+    !includesub scanning_subsystem.puml!component
 
-  component "Dynamic Mode Components" as dynamic_mode_components {
-    !includesub lockin_simple.puml!component
-    !includesub pll_simple.puml!component
-  }
-  component "Feedback Subsystem" as feedback_subsystem {
-    !includesub source_mixer_simple.puml!component
-    !includesub pid_simple.puml!component
-
-    s_del -> e_t
+    cantilever_subsystem --[hidden]down-- scanning_subsystem
   }
 
+  package " " <<layout>> as controller_logic {
+    component "Dynamic Mode Components" as dynamic_mode_components {
+      !includesub lockin_simple.puml!component
+      !includesub pll_simple.puml!component
+    }
+    component "Feedback Subsystem" as feedback_subsystem {
+      !includesub source_mixer_simple.puml!component
+      !includesub pid_simple.puml!component
+
+      s_del -> e_t
+    }
+
+    dynamic_mode_components --[hidden]down-- feedback_subsystem
+  }
 #+end_src
 
 #+RESULTS:
 [[file:images/afm_components.png]]
-* Cantilever Subsystem
-** Diagram
+
+* Components
+** Cantilever Subsystem
+*** Diagram
 
 #+begin_src plantuml :file ../images/cantilever_subsystem.png :tangle code/cantilever_subsystem.puml
   !include style.puml
@@ -50,13 +64,13 @@
     component Cantilever as cantilever
     component PSPD as pspd
     component "Piezo Oscillator" as cantilever_piezo
-    interface "y/z?" <<output>> as pspd_out
-    interface "y/z?" <<input>> as cant_piezo_in
+    interface "<latex>\langle R_y, R_z \rangle</latex>" <<output>> as pspd_out
+    interface "<latex>\langle S_y, S_z \rangle</latex>" <<input>> as cant_piezo_in
 
-    laser -d-> cantilever
+    laser --> cantilever
     cantilever -u-> pspd
     cantilever_piezo -u-> cantilever
-    pspd -r-> pspd_out
+    pspd -> pspd_out
     cant_piezo_in -l-> cantilever_piezo
   }
   !endsub
@@ -67,7 +81,7 @@
 
 - Is the piezo oscillator the same as the piezo on the sample? I.e., are we dealing with just one piezo, which we oscillate? I suppose the answer is yes...
 
-** Parameters
+*** Parameters
 
 | Grouping    | Parameter | Description              | Units |
 |-------------+-----------+--------------------------+-------|
@@ -82,31 +96,53 @@
 |             |           | Bias Amplifier Offset    | V     |
 |-------------+-----------+--------------------------+-------|
 
-* Scanning Subsystem
-** Diagram
+** Scanning Subsystem
+*** Diagram
 
 #+begin_src plantuml :file ../images/scanning_subsystem.png :tangle code/scanning_subsystem.puml
   !include style.puml
 
   !startsub component
-  component "Scanning Subsystem" as scanning_subsystem {
-    component Sample as sample
-    component Piezo as sample_piezo
-    component LVDT as lvdt
-    interface "x/y/z" <<input>> as sample_piezo_in
-    interface "x/y/z" <<output>> as lvdt_out
+  !include <material/grid>
 
-    sample_piezo -u-> sample
-    sample_piezo -d-> lvdt
-    lvdt -r-> lvdt_out
-    sample_piezo_in -l-> sample_piezo
+  component "Scanning Subsystem" as scanning_subsystem {
+
+    'Contains the H/W components (not considering the controller logic)'
+    package " " <<layout>> as scan_hw {
+      component Sample as sample
+      component Piezo as sample_piezo
+      component LVDT as lvdt
+      interface "<latex>\langle S_x, S_y, S_z \rangle</latex>" <<input>> as sample_piezo_in
+      interface "<latex>\langle R_x, R_y, R_z \rangle</latex>" <<output>> as lvdt_out
+
+      sample_piezo -u-> sample
+      sample_piezo -d-> lvdt
+      lvdt -r-> lvdt_out
+      sample_piezo_in -l-> sample_piezo
+    }
+
+    'Contains the controller logic'
+    package " " <<layout>> as spc_pkg {
+      interface "<latex>\langle R_x, R_y \rangle</latex>" <<input>> as spc_in
+      interface "<latex>\langle S_x, S_y \rangle</latex>" <<output>> as spc_out
+      component "Scan Pattern Controller\n<$ma_grid>" <<center>> as scan_pattern_controller
+
+      spc_in -> scan_pattern_controller
+      scan_pattern_controller -> spc_out
+    }
+
+    spc_out --> sample_piezo_in
+    lvdt_out --> spc_in
+
+    'Force positioning magic'
+    spc_pkg -[hidden]right- scan_hw
   }
   !endsub
 #+end_src
 
 #+RESULTS:
 [[file:images/scanning_subsystem.png]]
-** Parameters
+*** Parameters
 
 | Grouping    | Parameter | Description                 | Units |
 |-------------+-----------+-----------------------------+-------|
@@ -126,9 +162,9 @@
 |             |           | Scanning Speed              | m/s   |
 |             |           | Moving Speed (not scanning) | m/s   |
 |-------------+-----------+-----------------------------+-------|
-* Dynamic Mode Components
-** Lock-In Amplifier
-*** Simple
+** Dynamic Mode Components
+*** Lock-In Amplifier
+**** Simple
 
 #+begin_src plantuml :file ../images/lockin_simple.png :tangle code/lockin_simple.puml
   !include style.puml
@@ -148,11 +184,11 @@
 #+RESULTS:
 [[file:images/lockin_simple.png]]
 
-*** Expanded
+**** Expanded
 
 #+begin_src plantuml :file ../images/lockin.png :tangle code/lockin.puml
   !include style.puml
-  'left to right direction
+  left to right direction
 
   interface "<latex>U_{in}[\sim]</latex>" <<input>> as u_in
 
@@ -170,7 +206,7 @@
         storage X as x_sin
         rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator_sin
 
-        u_in -> x_sin
+        u_in --> x_sin
         sine_gen --> x_sin: "<latex>sin(\omega t)</latex>"
         x_sin --> integrator_sin
       }
@@ -179,7 +215,7 @@
         storage X as x_cos
         rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator_cos
 
-        u_in -> x_cos
+        u_in --> x_cos
         sine_gen --> x_cos: "<latex>cos(\omega t)</latex>"
         x_cos --> integrator_cos
       }
@@ -203,7 +239,7 @@
 #+RESULTS:
 [[file:images/lockin.png]]
 
-*** Parameters
+**** Parameters
 
 | Grouping | Parameter | Description         | Units  |
 |----------+-----------+---------------------+--------|
@@ -211,8 +247,8 @@
 |          |           | Reference Frequency | Hz     |
 |          |           | Averaging Period    | cycles |
 |----------+-----------+---------------------+--------|
-** Phase Locked Loop (PLL)
-*** Simple
+*** Phase Locked Loop (PLL)
+**** Simple
 
 #+begin_src plantuml :file ../images/pll_simple.png :tangle code/pll_simple.puml
   !include style.puml
@@ -231,7 +267,7 @@
 #+RESULTS:
 [[file:images/pll_simple.png]]
 
-*** Expanded
+**** Expanded
 
 #+begin_src plantuml :file ../images/pll.png :tangle code/pll.puml
   !include style.puml
@@ -293,24 +329,22 @@
 #+RESULTS:
 [[file:images/pll.png]]
 
-*** Parameters
+**** Parameters
 
 | Grouping | Parameter | Description | Units |
 |----------+-----------+-------------+-------|
 |          |           |             |       |
 |          |           |             |       |
-* Feedback Subsystem
-** Source Mixer
-*** Simple
+** Feedback Subsystem
+*** Source Mixer
+**** Simple
 #+begin_src plantuml :file ../images/source_mixer_simple.png :tangle code/source_mixer_simple.puml
   !include style.puml
 
   !startsub component
   component "Source Mixer" as source_mixer_simple
-  interface "<latex>y_{[0:N]}</latex>" <<input>> as y_ts
-  ' FIX ME I SHOULD NOT BE HERE!!!'
-  'interface "<latex>r_{[0:N]}</latex>" <<param>> as r_ts
-  interface "<latex>s_{\Delta}</latex>" <<output>> as s_del
+  interface "<latex>S_{in[0:N]}</latex>" <<input>> as y_ts
+  interface "<latex>S_{\Delta}</latex>" <<output>> as s_del
 
   y_ts -> source_mixer_simple
   'r_ts -u-> source_mixer_simple
@@ -322,17 +356,17 @@
 #+RESULTS:
 [[file:images/source_mixer_simple.png]]
 
-*** Expanded
+**** Expanded
 
 #+begin_src plantuml :file ../images/source_mixer.png :tangle code/source_mixer.puml
   !include style.puml
   left to right direction
 
   !startsub component
-  interface "<latex>y_{[0:N]}</latex>" <<input>> as y_ts
+  interface "<latex>S_{in[0:N]}</latex>" <<input>> as y_ts
 
   component "Source Mixer" as source_mixer {
-    rectangle "<&layers>" as single_source_block #line:grey;line.dashed {
+    rectangle "\n<&layers>" as single_source_block #line:grey;line.dashed {
       rectangle "<latex>LPF_i</latex>" as lpf
       rectangle "<latex>TR_i</latex>" as tr
       storage "<latex>\Delta</latex>" as delta
@@ -351,9 +385,9 @@
   y_ts --> lpf
 
   storage "<latex>\textbf{\Sigma}</latex>" as sum
-  interface "<latex>s_{\Delta}(t)</latex>" <<output>> as s_del
+  interface "<latex>S_{\Delta}(t)</latex>" <<output>> as s_del
 
-  gain --> sum
+  gain --> sum: "<&layers>\n"
   sum --> s_del
  !endsub
 
@@ -362,7 +396,7 @@
 #+RESULTS:
 [[file:images/source_mixer.png]]
 
-*** Parameters
+**** Parameters
 
 | Grouping        | Parameter   | Description                                         | Units |
 |-----------------+-------------+-----------------------------------------------------+-------|
@@ -380,8 +414,8 @@
 |                 |             | Gi: gain applied to final signal i (before summing) |       |
 |-----------------+-------------+-----------------------------------------------------+-------|
 
-** PID Controller
-*** Simple
+*** PID Controller
+**** Simple
 
 #+begin_src plantuml :file ../images/pid_simple.png :tangle code/pid_simple.puml
   !include style.puml
@@ -400,7 +434,7 @@
 #+RESULTS:
 [[file:images/pid_simple.png]]
 
-*** Expanded
+**** Expanded
 
 #+begin_src plantuml :file ../images/pid.png :tangle code/pid.puml
   !include style.puml
@@ -408,6 +442,8 @@
 
   interface "e(t)" <<input>> as e_t
   interface "u(t)" <<output>> as u_t
+  interface "r(t)" as r_t
+  interface "y(t)" as y_t
   storage "<latex>\Delta</latex>" as diff
   rectangle "Plant / Process" as proc
 
@@ -445,7 +481,7 @@
 #+RESULTS:
 [[file:images/pid.png]]
 
-*** Parameters
+**** Parameters
 
 | Grouping | Parameter | Description       | Units |
 |----------+-----------+-------------------+-------|

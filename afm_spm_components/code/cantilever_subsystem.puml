@@ -6,13 +6,13 @@ component "Cantilever Subsystem" as cantilever_subsystem {
   component Cantilever as cantilever
   component PSPD as pspd
   component "Piezo Oscillator" as cantilever_piezo
-  interface "y/z?" <<output>> as pspd_out
-  interface "y/z?" <<input>> as cant_piezo_in
+  interface "<latex>\langle R_y, R_z \rangle</latex>" <<output>> as pspd_out
+  interface "<latex>\langle S_y, S_z \rangle</latex>" <<input>> as cant_piezo_in
 
-  laser -d-> cantilever
+  laser --> cantilever
   cantilever -u-> pspd
   cantilever_piezo -u-> cantilever
-  pspd -r-> pspd_out
+  pspd -> pspd_out
   cant_piezo_in -l-> cantilever_piezo
 }
 !endsub

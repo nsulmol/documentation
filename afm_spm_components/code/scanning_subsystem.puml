@@ -1,16 +1,38 @@
 !include style.puml
 
 !startsub component
-component "Scanning Subsystem" as scanning_subsystem {
-  component Sample as sample
-  component Piezo as sample_piezo
-  component LVDT as lvdt
-  interface "x/y/z" <<input>> as sample_piezo_in
-  interface "x/y/z" <<output>> as lvdt_out
+!include <material/grid>
 
-  sample_piezo -u-> sample
-  sample_piezo -d-> lvdt
-  lvdt -r-> lvdt_out
-  sample_piezo_in -l-> sample_piezo
+component "Scanning Subsystem" as scanning_subsystem {
+
+  'Contains the H/W components (not considering the controller logic)'
+  package " " <<layout>> as scan_hw {
+    component Sample as sample
+    component Piezo as sample_piezo
+    component LVDT as lvdt
+    interface "<latex>\langle S_x, S_y, S_z \rangle</latex>" <<input>> as sample_piezo_in
+    interface "<latex>\langle R_x, R_y, R_z \rangle</latex>" <<output>> as lvdt_out
+
+    sample_piezo -u-> sample
+    sample_piezo -d-> lvdt
+    lvdt -r-> lvdt_out
+    sample_piezo_in -l-> sample_piezo
+  }
+
+  'Contains the controller logic'
+  package " " <<layout>> as spc_pkg {
+    interface "<latex>\langle R_x, R_y \rangle</latex>" <<input>> as spc_in
+    interface "<latex>\langle S_x, S_y \rangle</latex>" <<output>> as spc_out
+    component "Scan Pattern Controller\n<$ma_grid>" <<center>> as scan_pattern_controller
+
+    spc_in -> scan_pattern_controller
+    scan_pattern_controller -> spc_out
+  }
+
+  spc_out --> sample_piezo_in
+  lvdt_out --> spc_in
+
+  'Force positioning magic'
+  spc_pkg -[hidden]right- scan_hw
 }
 !endsub
