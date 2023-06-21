@@ -1,10 +1,10 @@
 !include style.puml
 
 !startsub component
-interface "e(t)" <<input>> as e_t
-interface "u(t)" <<output>> as u_t
+interface "e(t)" <<input>> as pi_e_t_in
+interface "u(t)" <<output>> as pi_u_t_out
 component "PID Controller" as pid_simple
 
-e_t -> pid_simple
-pid_simple -> u_t
+pi_e_t_in -> pid_simple
+pid_simple -> pi_u_t_out
 !endsub

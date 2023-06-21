@@ -1,77 +1,108 @@
-#+title:AFM / SPM Components Diagrams
-#+property: header-args :mkdirp yes :dir code :results value file
-#+options: toc:nil
+#+title:AFM / SPM Components
+#+property: header-args :mkdirp yes :dir code :results value drawer
+#+options: h:5 toc:3
 
-* Overarching Diagram
+#+name: attr_fit_width
+#+begin_src sh :var data="" :var width_org_percent=90 width_html_pix=1200 :results output :exports none
+  echo "#+attr_org: :width $width_org_percent%"
+  echo "#+attr_html: :width $width_html_pix"
+  echo "$data"
+#+end_src
+
 #+begin_src plantuml :tangle code/style.puml :exports none
-  skinparam componentStyle uml2
-  skinparam interface {
-    backgroundColor<<input>> lightblue
-    backgroundColor<<output>> pink
-    backgroundColor<<param>> darkseagreen
+<style>
+  .input {
+    BackgroundColor LightBlue
   }
-
-  skinparam package {
-    borderColor<<layout>> transparent
+  .output {
+    BackgroundColor Pink
   }
+  .param {
+    BackgroundColor DarkSeaGreen
+  }
+  .layout {
+    LineColor Transparent
+  }
+  .center {
+    HorizontalAlignment center
+  }
+  .left {
+    HorizontalAlignment left
+  }
+  .right {
+    HorizontalAlignment right
+  }
+</style>
 
-  skinparam defaultTextAlignment<<right>> right
-  skinparam defaultTextAlignment<<left>> left
-  skinparam defaultTextAlignment<<center>> center
-
+  skinparam componentStyle rectangle
+  'skinparam linetype ortho
   hide stereotype
 #+end_src
 
+* Overarching Diagram
+
+#+header: :post attr_fit_width(data=*this*)
 #+begin_src plantuml :file ../images/afm_components.png :tangle code/afm_components.puml
   !include style.puml
 
+  !startsub afm_hardware
   package " " <<layout>> as afm_hardware {
     !includesub cantilever_subsystem.puml!component
     !includesub scanning_subsystem.puml!component
 
     cantilever_subsystem --[hidden]down-- scanning_subsystem
   }
+  !endsub
 
   package " " <<layout>> as controller_logic {
+    !startsub dynamic_mode_components
     component "Dynamic Mode Components" as dynamic_mode_components {
       !includesub lockin_simple.puml!component
-      !includesub pll_simple.puml!component
+      !includesub signal_generator_simple.puml!component
     }
-    component "Feedback Subsystem" as feedback_subsystem {
+    !endsub
+
+    !startsub feedback_subsystem
+    component "Cantilever Feedback Subsystem" as feedback_subsystem {
       !includesub source_mixer_simple.puml!component
       !includesub pid_simple.puml!component
 
-      s_del -> e_t
+      sm_s_del_out -> pi_e_t_in
     }
+    !endsub
 
     dynamic_mode_components --[hidden]down-- feedback_subsystem
   }
 #+end_src
 
 #+RESULTS:
+:results:
+#+attr_org: :width 90%
+#+attr_html: :width 1200
 [[file:images/afm_components.png]]
+:end:
 
 * Components
-** Cantilever Subsystem
-*** Diagram
-
+** Main Hardware
+*** Cantilever Subsystem
+**** Diagram
 #+begin_src plantuml :file ../images/cantilever_subsystem.png :tangle code/cantilever_subsystem.puml
   !include style.puml
 
   !startsub component
   component "Cantilever Subsystem" as cantilever_subsystem {
-    component Laser as laser
-    component Cantilever as cantilever
-    component PSPD as pspd
-    component "Piezo Oscillator" as cantilever_piezo
-    interface "<latex>\langle R_y, R_z \rangle</latex>" <<output>> as pspd_out
-    interface "<latex>\langle S_y, S_z \rangle</latex>" <<input>> as cant_piezo_in
+    component Laser as cs_laser
+    component Cantilever as cs_cantilever
+    component PSPD as cs_pspd
+    component "Piezo" as cs_piezo
+    interface "<latex>R_z</latex>" <<output>> as cs_pspd_out
+    interface "<latex>S_z</latex>" <<input>> as cs_piezo_in
 
-    laser --> cantilever
-    cantilever -u-> pspd
-    cantilever_piezo -u-> cantilever
-    pspd -> pspd_out
-    cant_piezo_in -l-> cantilever_piezo
+    cs_laser --> cs_cantilever
+    cs_cantilever -u-> cs_pspd
+    cs_piezo -u-> cs_cantilever
+    cs_pspd -> cs_pspd_out
+    cs_piezo_in -> cs_piezo
   }
   !endsub
 #+end_src
@@ -79,60 +110,58 @@
 #+RESULTS:
 [[file:images/cantilever_subsystem.png]]
 
-- Is the piezo oscillator the same as the piezo on the sample? I.e., are we dealing with just one piezo, which we oscillate? I suppose the answer is yes...
+**** Parameters
 
-*** Parameters
+| Grouping    | Parameter             | Description                       | Units |
+|-------------+-----------------------+-----------------------------------+-------|
+| Cantilever  | ~cantilever_invols~   | Inverse Optical Lever Sensitivity | m/V   |
+|             | ~cantilever_k~        | Spring Constant                   |       |
+|             | ~cantilever_f0~       | Resonant Frequency                | Hz    |
+|             | ~cantilever_q~        | Q-Factor                          |       |
+|-------------+-----------------------+-----------------------------------+-------|
+| Tip-Surface | ~tip_bias_voltage~    | Tip-Surface Bias Voltage          | V     |
+|             | ~tip_bias_amp_gain~   | Bias Amplifier Gain               | V     |
+|             | ~tip_bias_amp_offset~ | Bias Amplifier Offset             | V     |
+|-------------+-----------------------+-----------------------------------+-------|
 
-| Grouping    | Parameter | Description              | Units |
-|-------------+-----------+--------------------------+-------|
-| PSPD        | invOLS    |                          | m/V   |
-|-------------+-----------+--------------------------+-------|
-| Cantilever  |           | Spring Constant          |       |
-|             |           | Resonant Frequency       |       |
-|             |           | Q-Factor                 |       |
-|-------------+-----------+--------------------------+-------|
-| Tip-Surface |           | Tip-Surface Bias Voltage | V     |
-|             |           | Bias Amplifier Gain      | V     |
-|             |           | Bias Amplifier Offset    | V     |
-|-------------+-----------+--------------------------+-------|
-
-** Scanning Subsystem
-*** Diagram
+*** Scanning Subsystem
+**** Diagram
 
 #+begin_src plantuml :file ../images/scanning_subsystem.png :tangle code/scanning_subsystem.puml
   !include style.puml
 
   !startsub component
-  !include <material/grid>
+  '!include <material/grid> '( or vector_line, or vector_polyline)
 
   component "Scanning Subsystem" as scanning_subsystem {
 
     'Contains the H/W components (not considering the controller logic)'
     package " " <<layout>> as scan_hw {
-      component Sample as sample
-      component Piezo as sample_piezo
-      component LVDT as lvdt
-      interface "<latex>\langle S_x, S_y, S_z \rangle</latex>" <<input>> as sample_piezo_in
-      interface "<latex>\langle R_x, R_y, R_z \rangle</latex>" <<output>> as lvdt_out
+      component Sample as ss_sample
+      component Piezo as ss_piezo
+      component LVDT as ss_lvdt
+      interface "<latex>\langle S_x, S_y \rangle</latex>" <<input>> as ss_piezo_in
+      interface "<latex>\langle R_x, R_y \rangle</latex>" <<output>> as ss_lvdt_out
 
-      sample_piezo -u-> sample
-      sample_piezo -d-> lvdt
-      lvdt -r-> lvdt_out
-      sample_piezo_in -l-> sample_piezo
+      ss_piezo -u-> ss_sample
+      ss_piezo -d-> ss_lvdt
+      ss_lvdt -> ss_lvdt_out
+      ss_piezo_in -> ss_piezo
     }
 
     'Contains the controller logic'
     package " " <<layout>> as spc_pkg {
       interface "<latex>\langle R_x, R_y \rangle</latex>" <<input>> as spc_in
       interface "<latex>\langle S_x, S_y \rangle</latex>" <<output>> as spc_out
-      component "Scan Pattern Controller\n<$ma_grid>" <<center>> as scan_pattern_controller
+      'Consider adding <$ma_vector_polyline,color=dimgray>" <<center>> for sprite
+      component "Scan Pattern\nController\n" <<center>> as scan_pattern_controller
 
       spc_in -> scan_pattern_controller
       scan_pattern_controller -> spc_out
     }
 
-    spc_out --> sample_piezo_in
-    lvdt_out --> spc_in
+    spc_out ..> ss_piezo_in
+    ss_lvdt_out ..> spc_in
 
     'Force positioning magic'
     spc_pkg -[hidden]right- scan_hw
@@ -142,91 +171,158 @@
 
 #+RESULTS:
 [[file:images/scanning_subsystem.png]]
-*** Parameters
 
-| Grouping    | Parameter | Description                 | Units |
-|-------------+-----------+-----------------------------+-------|
-| Piezo       | {3d}      | Piezo Sensitivity           | Ang/V |
-| (out)       | {3d}      | Piezo Amplifier Gain        | V/V   |
-|             | {3d}      | Piezo Amplifier Offset/Bias | V     |
-|-------------+-----------+-----------------------------+-------|
-| LVDT        | {3d}      | LVDT Sensitivity            | V/Ang |
-| (in)        | {3d}      | LVDT Offset/Bias            | V     |
-|-------------+-----------+-----------------------------+-------|
-| Scan Params | {2d}      | Maximum Scan Dimensions     | m     |
-|             | {2d}      | Current Scan Dimensions     | m     |
-|             | {2d}      | Current Scan Offset (x,y)   | m     |
-|             | {2d}      | Coordinate System Origin    | m     |
-|             |           | ROI Angle (if applicable)   | \deg  |
-|             |           | Scan Direction              | N/A   |
-|             |           | Scanning Speed              | m/s   |
-|             |           | Moving Speed (not scanning) | m/s   |
-|-------------+-----------+-----------------------------+-------|
+**** Parameters
+
+| Grouping    | Parameter                | Description                 | Units |
+|-------------+--------------------------+-----------------------------+-------|
+| Piezo       | ~piezo_sensitivity_{3d}~ | Piezo Sensitivity           | Ang/V |
+|             | ~piezo_amp_gain_{3d}~    | Piezo Amplifier Gain        | V/V   |
+|             | ~piezo_amp_offset_{3d}~  | Piezo Amplifier Offset/Bias | V     |
+|-------------+--------------------------+-----------------------------+-------|
+| LVDT        | ~lvdt_sensitivity_{3d}~  | LVDT Sensitivity            | V/Ang |
+|             | ~lvdt_offset_{3d}~       | LVDT Offset/Bias            | V     |
+|-------------+--------------------------+-----------------------------+-------|
+| Scan Params | ~scan_dim_{2d}~          | Maximum Scan Dimensions     | m     |
+|             | ~scan_roi_dims_{2d}~     | Current Scan Dimensions     | m     |
+|             | ~scan_roi_pos_{2d}~      | Current Scan Offset (x,y)   | m     |
+|             | ~scan_origin_pos_{2d}~   | Coordinate System Origin    | m     |
+|             | ~scan_roi_angle~         | ROI Angle (if applicable)   | \deg  |
+|             | ~scan_direction~         | Scan Direction              | N/A   |
+|             | ~scanning_speed~         | Scanning Speed              | m/s   |
+|             | ~moving_speed~           | Moving Speed (not scanning) | m/s   |
+|-------------+--------------------------+-----------------------------+-------|
 ** Dynamic Mode Components
+*** Signal Generator
+**** Diagram (Simple) :noexport:
+
+#+begin_src plantuml :file ../images/signal_generator_simple.png :tangle code/signal_generator_simple.puml
+  !include style.puml
+
+  !startsub component
+  component "Signal Generator" as signal_generator_simple
+
+  interface "<latex>A_{in}[-]</latex>" <<input>> as sg_amp_in
+  interface "<latex>\phi_{in}[-]</latex>" <<input>> as sg_phase_in
+  interface "<latex>S_{sin}[\sim]</latex>" <<output>> as sg_si_out
+  interface "<latex>S_{cos}[\sim]</latex>" <<output>> as sg_sq_out
+
+  sg_amp_in --> signal_generator_simple
+  sg_phase_in --> signal_generator_simple
+  signal_generator_simple --> sg_si_out
+  signal_generator_simple --> sg_sq_out
+  !endsub
+#+end_src
+
+#+RESULTS:
+[[file:images/signal_generator_simple.png]]
+
+**** Diagram
+
+#+begin_src plantuml :file ../images/signal_generator.png :tangle code/signal_generator.puml
+  !include style.puml
+  left to right direction
+
+  !startsub component
+  interface "<latex>A_{in}[-]</latex>" <<input>> as amp_in
+  interface "<latex>\phi_{in}[-]</latex>" <<input>> as phase_in
+  interface "<latex>S_{sin}[\sim]</latex>" <<output>> as s_inphase
+  interface "<latex>S_{cos}[\sim]</latex>" <<output>> as s_outphase
+
+  component "Signal Generator" as signal_generator {
+    interface "<latex>\omega_{ref}</latex>" <<param>> as ref_freq
+    component "Oscillator" as oscillator
+
+    ref_freq --> oscillator
+  }
+
+  amp_in --> oscillator
+  phase_in --> oscillator
+
+  oscillator --> s_inphase: "<latex>A_{in}\ sin(\omega_{ref}\ t + \phi_{in})</latex>"
+  oscillator --> s_outphase: "<latex>A_{in}\ cos(\omega_{ref}\ t + \phi_{in})</latex>"
+
+  !endsub
+#+end_src
+
+#+RESULTS:
+[[file:images/signal_generator.png]]
+
+**** Parameters
+
+| Grouping         | Parameter          | Description                    | Units |
+|------------------+--------------------+--------------------------------+-------|
+| Signal Generator | ~oscillator_f_ref~ | Oscillator reference frequency | Hz    |
+|------------------+--------------------+--------------------------------+-------|
+
 *** Lock-In Amplifier
-**** Simple
+**** Diagram (Simple) :noexport:
 
 #+begin_src plantuml :file ../images/lockin_simple.png :tangle code/lockin_simple.puml
   !include style.puml
 
   !startsub component
   component "Lock-In Amplifier" as lockin_simple
-  interface "<latex>U_{in}[\sim]</latex>" <<input>> as u_in
-  interface "<latex>V_{sig}[-]</latex>" <<output>> as v_sig
-  interface "<latex>\varphi[-]</latex>" <<output>> as phi
+  interface "<latex>u_{in}[\sim]</latex>" <<input>> as li_u_in
 
-  u_in -> lockin_simple
-  lockin_simple -r-> v_sig
-  lockin_simple -d-> phi
+  interface "<latex>u_{ref_{sin}}[\sim]</latex>" <<input>> as li_u_refi_in
+  interface "<latex>u_{ref_{cos}}[\sim]</latex>" <<input>> as li_u_refq_in
+  interface "<latex>v_{sig}[-]</latex>" <<output>> as li_amp_out
+  interface "<latex>\varphi[-]</latex>" <<output>> as li_phase_out
+
+  li_u_in --> lockin_simple
+  li_u_refi_in --> lockin_simple
+  li_u_refq_in --> lockin_simple
+  lockin_simple --> li_amp_out
+  lockin_simple --> li_phase_out
   !endsub
 #+end_src
 
 #+RESULTS:
 [[file:images/lockin_simple.png]]
 
-**** Expanded
+**** Diagram
 
 #+begin_src plantuml :file ../images/lockin.png :tangle code/lockin.puml
   !include style.puml
   left to right direction
 
   interface "<latex>U_{in}[\sim]</latex>" <<input>> as u_in
+  interface "<latex>U_{ref_{sin}}[\sim]</latex>" <<input>> as u_refi
+  interface "<latex>U_{ref_{cos}}[\sim]</latex>" <<input>> as u_refq
 
   component "Lock-In Amplifier" as lockin {
-    interface "<latex>\omega_{ref}</latex>" <<param>> as ang_freq
     interface "<latex>T</latex>" <<param>> as avg_cycles
-    rectangle "Oscillator" as sine_gen
     rectangle "<latex>|\textbf{X+Y}|_2</latex>" as l2_norm
     rectangle "<latex>\theta=atan(\frac{\textbf{Y}}{\textbf{X}})</latex>" as phase_calc
 
-    ang_freq -> sine_gen
-
     package " " <<layout>> as integrator_blocks {
-      package " " <<layout>> as integrator_block_sin {
-        storage X as x_sin
-        rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator_sin
+      package " " <<layout>> as integrator_block_inphase {
+        storage X as x_inphase
+        rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt = \textbf{X}</latex>" as integrator_inphase
 
-        u_in --> x_sin
-        sine_gen --> x_sin: "<latex>sin(\omega t)</latex>"
-        x_sin --> integrator_sin
+        u_in --> x_inphase
+        u_refi --> x_inphase
+        x_inphase --> integrator_inphase
       }
 
-      package " " <<layout>> as integrator_block_cos {
-        storage X as x_cos
-        rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator_cos
+      package " " <<layout>> as integrator_block_outphase {
+        storage X as x_outphase
+        rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt = \textbf{Y}</latex>" as integrator_outphase
 
-        u_in --> x_cos
-        sine_gen --> x_cos: "<latex>cos(\omega t)</latex>"
-        x_cos --> integrator_cos
+        u_in --> x_outphase
+        u_refq --> x_outphase
+        x_outphase --> integrator_outphase
       }
     }
 
-    avg_cycles -> integrator_sin
+    avg_cycles -> integrator_inphase
+    avg_cycles -> integrator_outphase
 
-    integrator_sin --> l2_norm
-    integrator_cos --> l2_norm
-    integrator_sin --> phase_calc
-    integrator_cos --> phase_calc
+    integrator_inphase --> l2_norm
+    integrator_outphase --> l2_norm
+    integrator_inphase --> phase_calc
+    integrator_outphase --> phase_calc
   }
 
   interface "<latex>V_{sig}[-]</latex>" <<output>> as v_sig
@@ -241,14 +337,13 @@
 
 **** Parameters
 
-| Grouping | Parameter | Description         | Units  |
-|----------+-----------+---------------------+--------|
-|          |           | Signal Amplitude    | V      |
-|          |           | Reference Frequency | Hz     |
-|          |           | Averaging Period    | cycles |
-|----------+-----------+---------------------+--------|
-*** Phase Locked Loop (PLL)
-**** Simple
+| Grouping | Parameter                 | Description      | Units  |
+|----------+---------------------------+------------------+--------|
+| Lock-In  | ~lockin_averaging_period~ | Averaging Period | cycles |
+|----------+---------------------------+------------------+--------|
+*** Phase Locked Loop (PLL) (Deprecated??) :noexport:
+Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude Detector is the Lock-in Amplifier, and the delta + PID controller part is the feedback subsystem. What's missing is an oscillator, to create the final excitation signal.
+**** Diagram (Simple)
 
 #+begin_src plantuml :file ../images/pll_simple.png :tangle code/pll_simple.puml
   !include style.puml
@@ -267,7 +362,7 @@
 #+RESULTS:
 [[file:images/pll_simple.png]]
 
-**** Expanded
+**** Diagram
 
 #+begin_src plantuml :file ../images/pll.png :tangle code/pll.puml
   !include style.puml
@@ -329,26 +424,20 @@
 #+RESULTS:
 [[file:images/pll.png]]
 
-**** Parameters
-
-| Grouping | Parameter | Description | Units |
-|----------+-----------+-------------+-------|
-|          |           |             |       |
-|          |           |             |       |
 ** Feedback Subsystem
-*** Source Mixer
-**** Simple
+*** Multi-Source Setpoint Control
+**** Diagram (Simple) :noexport:
+
 #+begin_src plantuml :file ../images/source_mixer_simple.png :tangle code/source_mixer_simple.puml
   !include style.puml
 
   !startsub component
-  component "Source Mixer" as source_mixer_simple
-  interface "<latex>S_{in[0:N]}</latex>" <<input>> as y_ts
-  interface "<latex>S_{\Delta}</latex>" <<output>> as s_del
+  component "Multi-Source \nSetpoint Control" as source_mixer_simple
+  interface "<latex>S_{in[0:N]}</latex>" <<input>> as sm_s_in
+  interface "<latex>S_{\Delta}</latex>" <<output>> as sm_s_del_out
 
-  y_ts -> source_mixer_simple
-  'r_ts -u-> source_mixer_simple
-  source_mixer_simple -> s_del
+  sm_s_in -> source_mixer_simple
+  source_mixer_simple -> sm_s_del_out
   !endsub
 
 #+end_src
@@ -356,16 +445,16 @@
 #+RESULTS:
 [[file:images/source_mixer_simple.png]]
 
-**** Expanded
+**** Diagram
 
 #+begin_src plantuml :file ../images/source_mixer.png :tangle code/source_mixer.puml
   !include style.puml
   left to right direction
 
   !startsub component
-  interface "<latex>S_{in[0:N]}</latex>" <<input>> as y_ts
+  interface "<latex>S_{in[0:N]}</latex>" <<input>> as s_in
 
-  component "Source Mixer" as source_mixer {
+  component "Multi-Source Setpoint Control" as source_mixer {
     rectangle "\n<&layers>" as single_source_block #line:grey;line.dashed {
       rectangle "<latex>LPF_i</latex>" as lpf
       rectangle "<latex>TR_i</latex>" as tr
@@ -382,7 +471,7 @@
     }
   }
 
-  y_ts --> lpf
+  s_in --> lpf
 
   storage "<latex>\textbf{\Sigma}</latex>" as sum
   interface "<latex>S_{\Delta}(t)</latex>" <<output>> as s_del
@@ -398,35 +487,34 @@
 
 **** Parameters
 
-| Grouping        | Parameter   | Description                                         | Units |
-|-----------------+-------------+-----------------------------------------------------+-------|
-| Input           |             | Conversion factor (Units-to-V)                      | x/V   |
-|-----------------+-------------+-----------------------------------------------------+-------|
-| Low-Pass Filter | f0          | Cut-off Frequency                                   | Hz    |
-|                 | f0_min      | Min. F0 (if adaptive)                               | Hz    |
-|                 | f0_max      | Max. F0 (if adaptive)                               | Hz    |
-|                 | I_crossover | Current Crossover (if adaptive)                     | A     |
-|-----------------+-------------+-----------------------------------------------------+-------|
-| Transform       |             | Mode: 0:Off, 1:On, 2:Log, 4:IIR, 8:FUZZY            | n/a   |
-|                 |             | Fuzzy-Mode Threshold Level (FUZZY Only)             | V     |
-|-----------------+-------------+-----------------------------------------------------+-------|
-| Miscellaneous   |             | Reference Set-Point (fixed or provided by signal)   | V     |
-|                 |             | Gi: gain applied to final signal i (before summing) |       |
-|-----------------+-------------+-----------------------------------------------------+-------|
+| Grouping        | Parameter                                | Description                                        | Units |
+|-----------------+------------------------------------------+----------------------------------------------------+-------|
+| Input           | ~fb_input_{#}_units_to_v_factor~         | Units-to-V conversion (Input represents x as DC V) | x/V   |
+|                 | ~fb_input_{#}_gain~                      | Gi: gain applied to signal i (before summing)      |       |
+|                 | ~fb_input_{#}_setpoint~                  | Reference Set-Point                                | V     |
+|-----------------+------------------------------------------+----------------------------------------------------+-------|
+| Low-Pass Filter | ~fb_input_{#}_low_pass_freq~             | Cut-off Frequency                                  | Hz    |
+|                 | ~fb_input_{#}_low_pass_adaptive_fmin~    | Min. F0 (if adaptive)                              | Hz    |
+|                 | ~fb_input_{#}_low_pass_adaptive_fmax~    | Max. F0 (if adaptive)                              | Hz    |
+|                 | ~fb_input_{#}_low_pass_adaptive_current~ | Current Crossover (if adaptive)                    | A     |
+|-----------------+------------------------------------------+----------------------------------------------------+-------|
+| Transform       | ~fb_input_{#}_transform_mode~            | Mode: 0:Off, 1:On, 2:Log, 4:IIR, 8:FUZZY           | n/a   |
+|                 | ~fb_input_{#}_transform_fuzzy_threshold~ | Fuzzy-Mode Threshold Level (FUZZY Only)            | V     |
+|-----------------+------------------------------------------+----------------------------------------------------+-------|
 
 *** PID Controller
-**** Simple
+**** Diagram (Simple) :noexport:
 
 #+begin_src plantuml :file ../images/pid_simple.png :tangle code/pid_simple.puml
   !include style.puml
 
   !startsub component
-  interface "e(t)" <<input>> as e_t
-  interface "u(t)" <<output>> as u_t
+  interface "e(t)" <<input>> as pi_e_t_in
+  interface "u(t)" <<output>> as pi_u_t_out
   component "PID Controller" as pid_simple
 
-  e_t -> pid_simple
-  pid_simple -> u_t
+  pi_e_t_in -> pid_simple
+  pid_simple -> pi_u_t_out
   !endsub
 
 #+end_src
@@ -434,7 +522,7 @@
 #+RESULTS:
 [[file:images/pid_simple.png]]
 
-**** Expanded
+**** Diagram
 
 #+begin_src plantuml :file ../images/pid.png :tangle code/pid.puml
   !include style.puml
@@ -483,9 +571,215 @@
 
 **** Parameters
 
-| Grouping | Parameter | Description       | Units |
-|----------+-----------+-------------------+-------|
-|          |           | Proportional Gain | V/V   |
-|          |           | Integral Gain     | V/V   |
-|          |           | Derivative Gain   | V/V   |
-|----------+-----------+-------------------+-------|
+| Grouping | Parameter    | Description       | Units |
+|----------+--------------+-------------------+-------|
+| PID      | ~pid_gain_p~ | Proportional Gain | V/V   |
+|          | ~pid_gain_i~ | Integral Gain     | V/V   |
+|          | ~pid_gain_d~ | Derivative Gain   | V/V   |
+|----------+--------------+-------------------+-------|
+
+* AFM / SPM Setups
+** Contact Modes
+
+#+begin_src plantuml :file ../images/contact_mode.png :tangle code/contact_mode.puml
+  !include style.puml
+
+  !includesub cantilever_subsystem.puml!component
+  !includesub afm_components.puml!feedback_subsystem
+
+  note top of feedback_subsystem
+    Maintains z-height based on current z-height.
+  end note
+
+  cs_pspd_out .> sm_s_in
+  pi_u_t_out ..> cs_piezo_in
+
+#+end_src
+
+#+RESULTS:
+[[file:images/contact_mode.png]]
+
+** Dynamic Modes
+*** AM-AFM - Amplitude Modulation
+
+#+header: :post attr_fit_width(data=*this*)
+#+begin_src plantuml :file ../images/am-afm.png :tangle code/am-afm.puml
+  !include style.puml
+
+  !includesub cantilever_subsystem.puml!component
+  !includesub afm_components.puml!dynamic_mode_components
+
+  ' Feedback Components '
+  package " " <<layout>> as feedback_bundle {
+    !includesub afm_components.puml!feedback_subsystem
+    note bottom of feedback_subsystem
+      Maintains z-height based on change in signal amplitude.
+    end note
+
+    component "Amplitude Feedback" as amp_feedback {
+      component "Single Source\nSetpoint Control" as amp_sp_control
+      component "PID Controller" as amp_pid
+      interface "<latex>A_{in}</latex>" <<input>> as amp_feedback_in
+      interface "<latex>dA_{out}</latex>" <<output>> as amp_feedback_out
+
+      amp_feedback_in -> amp_sp_control
+      amp_sp_control -> amp_pid
+      amp_pid -> amp_feedback_out
+    }
+    note bottom of amp_feedback
+      Maintains AC amplitude.
+    end note
+  }
+
+  cs_pspd_out ..> li_u_in
+  sg_si_out .u.> li_u_refi_in
+  sg_sq_out .u.> li_u_refq_in
+  sg_si_out ..> cs_piezo_in: "<latex>S_i[\sim]</latex>"
+
+  li_amp_out ..> sm_s_in
+  pi_u_t_out ..> cs_piezo_in: "<latex>S_i[-]</latex>"
+
+  li_amp_out ..> amp_feedback_in
+  amp_feedback_out ..> sg_amp_in
+
+  li_phase_out ..> sg_phase_in
+#+end_src
+
+#+RESULTS:
+:results:
+#+attr_org: :width 90%
+#+attr_html: :width 1200
+[[file:images/am-afm.png]]
+:end:
+
+*** FM-AFM - Frequency Modulation
+
+#+header: :post attr_fit_width(data=*this*, width_org_percent="80", width_html_pix="960")
+#+begin_src plantuml :file ../images/fm-afm.png :tangle code/fm-afm.puml
+  !include style.puml
+
+  !includesub cantilever_subsystem.puml!component
+
+  package " " <<layout>> as sg_package {
+    !includesub signal_generator_simple.puml!component
+  }
+  package " " <<layout>> as li_package {
+    !includesub lockin_simple.puml!component
+  }
+
+  ' Feedback aspects'
+  !includesub afm_components.puml!feedback_subsystem
+  note bottom of feedback_subsystem
+    Maintains z-height to keep resonant frequency constant.
+  end note
+
+  component "Amplitude Feedback" as amp_feedback {
+    component "Single Source\nSetpoint Control" as amp_sp_control
+    component "PID Controller" as amp_pid
+    interface "<latex>A_{in}</latex>" <<input>> as amp_feedback_in
+    interface "<latex>dA_{out}</latex>" <<output>> as amp_feedback_out
+
+    amp_feedback_in -> amp_sp_control
+    amp_sp_control -> amp_pid
+    amp_pid -> amp_feedback_out
+  }
+  note top of amp_feedback
+    Maintains AC amplitude.
+  end note
+
+  component "Phase Feedback" as phase_feedback {
+    component "Single Source\nSetpoint Control" as phase_sp_control
+    component "PID Controller" as phase_pid
+    interface "<latex>\phi_{in}</latex>" <<input>> as phase_feedback_in
+    interface "<latex>d\phi_{out}</latex>" <<output>> as phase_feedback_out
+
+    phase_feedback_in -> phase_sp_control
+    phase_sp_control -> phase_pid
+    phase_pid -> phase_feedback_out
+  }
+  note top of phase_feedback
+    Maintains AC frequency at current resonant frequency
+    ('Phase Locked Loop' component).
+  end note
+
+  cs_pspd_out ..> li_u_in
+  sg_si_out .u.> li_u_refi_in
+  sg_sq_out .u.> li_u_refq_in
+  sg_sq_out ..> cs_piezo_in: "<latex>S_i[\sim]</latex>"
+
+  li_amp_out ..> amp_feedback_in
+  amp_feedback_out ..> sg_amp_in
+
+  li_phase_out ..> phase_feedback_in
+  phase_feedback_out ..> sg_phase_in
+
+  phase_feedback_out ..> sm_s_in
+  pi_u_t_out ..> cs_piezo_in: "<latex>S_i[-]</latex>"
+#+end_src
+* Full Table of Parameters
+
+| Subsystem     | Grouping           | Parameter                                | Description                                        | Units  |
+|---------------+--------------------+------------------------------------------+----------------------------------------------------+--------|
+| Cantilever    | Cantilever         | ~cantilever_invols~                      | Inverse Optical Lever Sensitivity                  | m/V    |
+|               |                    | ~cantilever_k~                           | Spring Constant                                    | n/a    |
+|               |                    | ~cantilever_f0~                          | Resonant Frequency                                 | Hz     |
+|               |                    | ~cantilever_q~                           | Q-Factor                                           | n/     |
+|               |                    |                                          |                                                    |        |
+|               | Tip-Surface        | ~tip_bias_voltage~                       | Tip-Surface Bias Voltage                           | V      |
+|               |                    | ~tip_bias_amp_gain~                      | Bias Amplifier Gain                                | V      |
+|               |                    | ~tip_bias_amp_offset~                    | Bias Amplifier Offset                              | V      |
+|---------------+--------------------+------------------------------------------+----------------------------------------------------+--------|
+| Scanning      | Piezo              | ~piezo_sensitivity_{3d}~                 | Piezo Sensitivity                                  | Ang/V  |
+|               |                    | ~piezo_amp_gain_{3d}~                    | Piezo Amplifier Gain                               | V/V    |
+|               |                    | ~piezo_amp_offset_{3d}~                  | Piezo Amplifier Offset/Bias                        | V      |
+|               |                    |                                          |                                                    |        |
+|               | LVDT               | ~lvdt_sensitivity_{3d}~                  | LVDT Sensitivity                                   | V/Ang  |
+|               |                    | ~lvdt_offset_{3d}~                       | LVDT Offset/Bias                                   | V      |
+|               |                    |                                          |                                                    |        |
+|               | Scan Params        | ~scan_dim_{2d}~                          | Maximum Scan Dimensions                            | m      |
+|               |                    | ~scan_roi_dims_{2d}~                     | Current Scan Dimensions                            | m      |
+|               |                    | ~scan_roi_pos_{2d}~                      | Current Scan Offset (x,y)                          | m      |
+|               |                    | ~scan_origin_pos_{2d}~                   | Coordinate System Origin                           | m      |
+|               |                    | ~scan_roi_angle~                         | ROI Angle (if applicable)                          | \deg   |
+|               |                    | ~scan_direction~                         | Scan Direction                                     | N/A    |
+|               |                    | ~scanning_speed~                         | Scanning Speed                                     | m/s    |
+|               |                    | ~moving_speed~                           | Moving Speed (not scanning)                        | m/s    |
+|---------------+--------------------+------------------------------------------+----------------------------------------------------+--------|
+| Main Feedback | Input              | ~fb_input_{#}_units_to_v_factor~         | Units-to-V conversion (Input represents x as DC V) | x/V    |
+|               |                    | ~fb_input_{#}_gain~                      | Gi: gain applied to signal i (before summing)      | V/V    |
+|               |                    | ~fb_input_{#}_setpoint~                  | Reference Set-Point                                | V      |
+|               |                    |                                          |                                                    |        |
+|               | Low-Pass Filter    | ~fb_input_{#}_low_pass_freq~             | Cut-off Frequency                                  | Hz     |
+|               |                    | ~fb_input_{#}_low_pass_adaptive_fmin~    | Min. F0 (if adaptive)                              | Hz     |
+|               |                    | ~fb_input_{#}_low_pass_adaptive_fmax~    | Max. F0 (if adaptive)                              | Hz     |
+|               |                    | ~fb_input_{#}_low_pass_adaptive_current~ | Current Crossover (if adaptive)                    | A      |
+|               |                    |                                          |                                                    |        |
+|               | Transform          | ~fb_input_transform_mode~                | Mode: 0:Off, 1:On, 2:Log, 4:IIR, 8:FUZZY           | n/a    |
+|               |                    | ~fb_input_transform_fuzzy_threshold~     | Fuzzy-Mode Threshold Level (FUZZY Only)            | V      |
+|               |                    |                                          |                                                    |        |
+|               | PID                | ~fb_pid_gain_p~                          | Proportional Gain                                  | V/V    |
+|               |                    | ~fb_pid_gain_i~                          | Integral Gain                                      | V/V    |
+|               |                    | ~fb_pid_gain_d~                          | Derivative Gain                                    | V/V    |
+|---------------+--------------------+------------------------------------------+----------------------------------------------------+--------|
+| Dynamic Mode  | Signal Generator   | ~oscillator_f_ref~                       | Oscillator reference frequency                     | Hz     |
+|               |                    |                                          |                                                    |        |
+|               | Lock-In            | ~lockin_averaging_period~                | Averaging Period                                   | cycles |
+|               |                    |                                          |                                                    |        |
+|               | Amplitude Feedback | ~amp_fb_enabled~                         | On/Off                                             | n/a    |
+|               |                    | ~amp_fb_input_v_to_v_factor~             | V-to-V conversion (represents V-amplitude as DC V) | V/V    |
+|               |                    | ~amp_fb_input_gain~                      | Gain applied to signal i                           | V/V    |
+|               |                    | ~amp_fb_input_setpoint~                  | dAmplitude Set-Point                               | V      |
+|               |                    | ~amp_fb_low_pass_freq~                   | Cut-off Frequency                                  | Hz     |
+|               |                    | ~amp_fb_pid_gain_p~                      | Proportional Gain                                  | V/V    |
+|               |                    | ~amp_fb_pid_gain_i~                      | Integral Gain                                      | V/V    |
+|               |                    | ~amp_fb_pid_gain_d~                      | Derivative Gain                                    | V/V    |
+|               |                    |                                          |                                                    |        |
+|               | Phase Feedback     | ~pll_fb_enabled~                         | On/Off                                             | n/a    |
+|               |                    | ~pll_fb_input_hz_to_v_factor~            | dHz-to-V conversion (represents Hz as DC V)        | Hz/V   |
+|               |                    | ~pll_fb_input_gain~                      | Gain applied to signal i                           | V/V    |
+|               |                    | ~pll_fb_input_setpoint~                  | dFrequency Set-Point                               | V      |
+|               |                    | ~pll_fb_low_pass_freq~                   | Cut-off Frequency                                  | Hz     |
+|               |                    | ~pll_fb_pid_gain_p~                      | Proportional Gain                                  | V/V    |
+|               |                    | ~pll_fb_pid_gain_i~                      | Integral Gain                                      | V/V    |
+|               |                    | ~pll_fb_pid_gain_d~                      | Derivative Gain                                    | V/V    |
+|---------------+--------------------+------------------------------------------+----------------------------------------------------+--------|

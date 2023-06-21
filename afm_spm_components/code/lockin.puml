@@ -2,42 +2,41 @@
 left to right direction
 
 interface "<latex>U_{in}[\sim]</latex>" <<input>> as u_in
+interface "<latex>U_{ref_{sin}}[\sim]</latex>" <<input>> as u_refi
+interface "<latex>U_{ref_{cos}}[\sim]</latex>" <<input>> as u_refq
 
 component "Lock-In Amplifier" as lockin {
-  interface "<latex>\omega_{ref}</latex>" <<param>> as ang_freq
   interface "<latex>T</latex>" <<param>> as avg_cycles
-  rectangle "Oscillator" as sine_gen
   rectangle "<latex>|\textbf{X+Y}|_2</latex>" as l2_norm
   rectangle "<latex>\theta=atan(\frac{\textbf{Y}}{\textbf{X}})</latex>" as phase_calc
 
-  ang_freq -> sine_gen
-
   package " " <<layout>> as integrator_blocks {
-    package " " <<layout>> as integrator_block_sin {
-      storage X as x_sin
-      rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator_sin
+    package " " <<layout>> as integrator_block_inphase {
+      storage X as x_inphase
+      rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt = \textbf{X}</latex>" as integrator_inphase
 
-      u_in --> x_sin
-      sine_gen --> x_sin: "<latex>sin(\omega t)</latex>"
-      x_sin --> integrator_sin
+      u_in --> x_inphase
+      u_refi --> x_inphase
+      x_inphase --> integrator_inphase
     }
 
-    package " " <<layout>> as integrator_block_cos {
-      storage X as x_cos
-      rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt</latex>" as integrator_cos
+    package " " <<layout>> as integrator_block_outphase {
+      storage X as x_outphase
+      rectangle "<latex>\frac{1}{T}\int_{t-T}^{t}dt = \textbf{Y}</latex>" as integrator_outphase
 
-      u_in --> x_cos
-      sine_gen --> x_cos: "<latex>cos(\omega t)</latex>"
-      x_cos --> integrator_cos
+      u_in --> x_outphase
+      u_refq --> x_outphase
+      x_outphase --> integrator_outphase
     }
   }
 
-  avg_cycles -> integrator_sin
+  avg_cycles -> integrator_inphase
+  avg_cycles -> integrator_outphase
 
-  integrator_sin --> l2_norm
-  integrator_cos --> l2_norm
-  integrator_sin --> phase_calc
-  integrator_cos --> phase_calc
+  integrator_inphase --> l2_norm
+  integrator_outphase --> l2_norm
+  integrator_inphase --> phase_calc
+  integrator_outphase --> phase_calc
 }
 
 interface "<latex>V_{sig}[-]</latex>" <<output>> as v_sig

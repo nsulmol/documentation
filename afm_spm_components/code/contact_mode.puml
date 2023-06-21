@@ -1,0 +1,11 @@
+!include style.puml
+
+!includesub cantilever_subsystem.puml!component
+!includesub afm_components.puml!feedback_subsystem
+
+note top of feedback_subsystem
+  Maintains z-height based on current z-height.
+end note
+
+cs_pspd_out .> sm_s_in
+pi_u_t_out ..> cs_piezo_in

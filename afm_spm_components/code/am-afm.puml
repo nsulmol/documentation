@@ -1,0 +1,39 @@
+!include style.puml
+
+!includesub cantilever_subsystem.puml!component
+!includesub afm_components.puml!dynamic_mode_components
+
+' Feedback Components '
+package " " <<layout>> as feedback_bundle {
+  !includesub afm_components.puml!feedback_subsystem
+  note bottom of feedback_subsystem
+    Maintains z-height based on change in signal amplitude.
+  end note
+
+  component "Amplitude Feedback" as amp_feedback {
+    component "Single Source\nSetpoint Control" as amp_sp_control
+    component "PID Controller" as amp_pid
+    interface "<latex>A_{in}</latex>" <<input>> as amp_feedback_in
+    interface "<latex>dA_{out}</latex>" <<output>> as amp_feedback_out
+
+    amp_feedback_in -> amp_sp_control
+    amp_sp_control -> amp_pid
+    amp_pid -> amp_feedback_out
+  }
+  note bottom of amp_feedback
+    Maintains AC amplitude.
+  end note
+}
+
+cs_pspd_out ..> li_u_in
+sg_si_out .u.> li_u_refi_in
+sg_sq_out .u.> li_u_refq_in
+sg_si_out ..> cs_piezo_in: "<latex>S_i[\sim]</latex>"
+
+li_amp_out ..> sm_s_in
+pi_u_t_out ..> cs_piezo_in: "<latex>S_i[-]</latex>"
+
+li_amp_out ..> amp_feedback_in
+amp_feedback_out ..> sg_amp_in
+
+li_phase_out ..> sg_phase_in

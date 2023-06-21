@@ -1,22 +1,30 @@
 !include style.puml
 
+!startsub afm_hardware
 package " " <<layout>> as afm_hardware {
   !includesub cantilever_subsystem.puml!component
   !includesub scanning_subsystem.puml!component
 
   cantilever_subsystem --[hidden]down-- scanning_subsystem
 }
+!endsub
 
-component "Dynamic Mode Components" as dynamic_mode_components {
-  !includesub lockin_simple.puml!component
-  !includesub pll_simple.puml!component
+package " " <<layout>> as controller_logic {
+  !startsub dynamic_mode_components
+  component "Dynamic Mode Components" as dynamic_mode_components {
+    !includesub lockin_simple.puml!component
+    !includesub signal_generator_simple.puml!component
+  }
+  !endsub
+
+  !startsub feedback_subsystem
+  component "Cantilever Feedback Subsystem" as feedback_subsystem {
+    !includesub source_mixer_simple.puml!component
+    !includesub pid_simple.puml!component
+
+    sm_s_del_out -> pi_e_t_in
+  }
+  !endsub
+
+  dynamic_mode_components --[hidden]down-- feedback_subsystem
 }
-component "Feedback Subsystem" as feedback_subsystem {
-  !includesub source_mixer_simple.puml!component
-  !includesub pid_simple.puml!component
-
-  s_del -> e_t
-}
-
-cantilever_subsystem -[hidden]right- dynamic_mode_components
-scanning_package -[hidden]right- feedback_subsystem

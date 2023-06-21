@@ -1,0 +1,15 @@
+!include style.puml
+
+!startsub component
+component "Signal Generator" as signal_generator_simple
+
+interface "<latex>A_{in}[-]</latex>" <<input>> as sg_amp_in
+interface "<latex>\phi_{in}[-]</latex>" <<input>> as sg_phase_in
+interface "<latex>S_{sin}[\sim]</latex>" <<output>> as sg_si_out
+interface "<latex>S_{cos}[\sim]</latex>" <<output>> as sg_sq_out
+
+sg_amp_in --> signal_generator_simple
+sg_phase_in --> signal_generator_simple
+signal_generator_simple --> sg_si_out
+signal_generator_simple --> sg_sq_out
+!endsub

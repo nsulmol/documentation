@@ -1,16 +1,27 @@
-skinparam componentStyle uml2
-skinparam interface {
-  backgroundColor<<input>> lightblue
-  backgroundColor<<output>> pink
-  backgroundColor<<param>> darkseagreen
-}
+<style>
+  .input {
+    BackgroundColor LightBlue
+  }
+  .output {
+    BackgroundColor Pink
+  }
+  .param {
+    BackgroundColor DarkSeaGreen
+  }
+  .layout {
+    LineColor Transparent
+  }
+  .center {
+    HorizontalAlignment center
+  }
+  .left {
+    HorizontalAlignment left
+  }
+  .right {
+    HorizontalAlignment right
+  }
+</style>
 
-skinparam package {
-  borderColor<<layout>> transparent
-}
-
-skinparam defaultTextAlignment<<right>> right
-skinparam defaultTextAlignment<<left>> left
-skinparam defaultTextAlignment<<center>> center
-
-hide stereotype
+  skinparam componentStyle rectangle
+  'skinparam linetype ortho
+  hide stereotype

@@ -1,0 +1,59 @@
+!include style.puml
+
+!includesub cantilever_subsystem.puml!component
+
+package " " <<layout>> as sg_package {
+  !includesub signal_generator_simple.puml!component
+}
+package " " <<layout>> as li_package {
+  !includesub lockin_simple.puml!component
+}
+
+' Feedback aspects'
+!includesub afm_components.puml!feedback_subsystem
+note bottom of feedback_subsystem
+  Maintains z-height to keep resonant frequency constant.
+end note
+
+component "Amplitude Feedback" as amp_feedback {
+  component "Single Source\nSetpoint Control" as amp_sp_control
+  component "PID Controller" as amp_pid
+  interface "<latex>A_{in}</latex>" <<input>> as amp_feedback_in
+  interface "<latex>dA_{out}</latex>" <<output>> as amp_feedback_out
+
+  amp_feedback_in -> amp_sp_control
+  amp_sp_control -> amp_pid
+  amp_pid -> amp_feedback_out
+}
+note top of amp_feedback
+  Maintains AC amplitude.
+end note
+
+component "Phase Feedback" as phase_feedback {
+  component "Single Source\nSetpoint Control" as phase_sp_control
+  component "PID Controller" as phase_pid
+  interface "<latex>\phi_{in}</latex>" <<input>> as phase_feedback_in
+  interface "<latex>d\phi_{out}</latex>" <<output>> as phase_feedback_out
+
+  phase_feedback_in -> phase_sp_control
+  phase_sp_control -> phase_pid
+  phase_pid -> phase_feedback_out
+}
+note top of phase_feedback
+  Maintains AC frequency at current resonant frequency
+  ('Phase Locked Loop' component).
+end note
+
+cs_pspd_out ..> li_u_in
+sg_si_out .u.> li_u_refi_in
+sg_sq_out .u.> li_u_refq_in
+sg_sq_out ..> cs_piezo_in: "<latex>S_i[\sim]</latex>"
+
+li_amp_out ..> amp_feedback_in
+amp_feedback_out ..> sg_amp_in
+
+li_phase_out ..> phase_feedback_in
+phase_feedback_out ..> sg_phase_in
+
+phase_feedback_out ..> sm_s_in
+pi_u_t_out ..> cs_piezo_in: "<latex>S_i[-]</latex>"

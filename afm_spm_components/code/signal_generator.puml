@@ -1,0 +1,23 @@
+!include style.puml
+left to right direction
+
+!startsub component
+interface "<latex>A_{in}[-]</latex>" <<input>> as amp_in
+interface "<latex>\phi_{in}[-]</latex>" <<input>> as phase_in
+interface "<latex>S_{sin}[\sim]</latex>" <<output>> as s_inphase
+interface "<latex>S_{cos}[\sim]</latex>" <<output>> as s_outphase
+
+component "Signal Generator" as signal_generator {
+  interface "<latex>\omega_{ref}</latex>" <<param>> as ref_freq
+  component "Oscillator" as oscillator
+
+  ref_freq --> oscillator
+}
+
+amp_in --> oscillator
+phase_in --> oscillator
+
+oscillator --> s_inphase: "<latex>A_{in}\ sin(\omega_{ref}\ t + \phi_{in})</latex>"
+oscillator --> s_outphase: "<latex>A_{in}\ cos(\omega_{ref}\ t + \phi_{in})</latex>"
+
+!endsub

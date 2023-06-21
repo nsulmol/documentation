@@ -1,11 +1,10 @@
 !include style.puml
 
 !startsub component
-component "Source Mixer" as source_mixer_simple
-interface "<latex>S_{in[0:N]}</latex>" <<input>> as y_ts
-interface "<latex>S_{\Delta}</latex>" <<output>> as s_del
+component "Multi-Source \nSetpoint Control" as source_mixer_simple
+interface "<latex>S_{in[0:N]}</latex>" <<input>> as sm_s_in
+interface "<latex>S_{\Delta}</latex>" <<output>> as sm_s_del_out
 
-y_ts -> source_mixer_simple
-'r_ts -u-> source_mixer_simple
-source_mixer_simple -> s_del
+sm_s_in -> source_mixer_simple
+source_mixer_simple -> sm_s_del_out
 !endsub

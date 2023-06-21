@@ -2,11 +2,16 @@
 
 !startsub component
 component "Lock-In Amplifier" as lockin_simple
-interface "<latex>U_{in}[\sim]</latex>" <<input>> as u_in
-interface "<latex>V_{sig}[-]</latex>" <<output>> as v_sig
-interface "<latex>\varphi[-]</latex>" <<output>> as phi
+interface "<latex>u_{in}[\sim]</latex>" <<input>> as li_u_in
 
-u_in -> lockin_simple
-lockin_simple -r-> v_sig
-lockin_simple -d-> phi
+interface "<latex>u_{ref_{sin}}[\sim]</latex>" <<input>> as li_u_refi_in
+interface "<latex>u_{ref_{cos}}[\sim]</latex>" <<input>> as li_u_refq_in
+interface "<latex>v_{sig}[-]</latex>" <<output>> as li_amp_out
+interface "<latex>\varphi[-]</latex>" <<output>> as li_phase_out
+
+li_u_in --> lockin_simple
+li_u_refi_in --> lockin_simple
+li_u_refq_in --> lockin_simple
+lockin_simple --> li_amp_out
+lockin_simple --> li_phase_out
 !endsub

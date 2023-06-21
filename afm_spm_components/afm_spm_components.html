@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-06-15 Thu 15:56 -->
+<!-- 2023-06-21 Wed 19:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AFM / SPM Components Diagrams</title>
+<title>AFM / SPM Components</title>
 <meta name="author" content="Nick Sullivan" />
 <meta name="generator" content="Org Mode" />
 <style>
@@ -196,40 +196,87 @@
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">AFM / SPM Components Diagrams</h1>
-
-<div id="outline-container-org383e0d8" class="outline-2">
-<h2 id="org383e0d8"><span class="section-number-2">1.</span> Overarching Diagram</h2>
-<div class="outline-text-2" id="text-1">
-
-<div id="org9b30cdd" class="figure">
-<p><img src="images/afm_components.png" alt="afm_components.png" />
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org19e644e" class="outline-2">
-<h2 id="org19e644e"><span class="section-number-2">2.</span> Cantilever Subsystem</h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-org6f475f8" class="outline-3">
-<h3 id="org6f475f8"><span class="section-number-3">2.1.</span> Diagram</h3>
-<div class="outline-text-3" id="text-2-1">
-
-<div id="org93c62dd" class="figure">
-<p><img src="images/cantilever_subsystem.png" alt="cantilever_subsystem.png" />
-</p>
-</div>
-
-<ul class="org-ul">
-<li>Is the piezo oscillator the same as the piezo on the sample? I.e., are we dealing with just one piezo, which we oscillate? I suppose the answer is yes&#x2026;</li>
+<h1 class="title">AFM / SPM Components</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org0d700a4">1. Overarching Diagram</a></li>
+<li><a href="#orgb31a342">2. Components</a>
+<ul>
+<li><a href="#org98d6e2f">2.1. Main Hardware</a>
+<ul>
+<li><a href="#org8c6b0eb">2.1.1. Cantilever Subsystem</a></li>
+<li><a href="#orgced6271">2.1.2. Scanning Subsystem</a></li>
+</ul>
+</li>
+<li><a href="#org916ba15">2.2. Dynamic Mode Components</a>
+<ul>
+<li><a href="#org9d37b53">2.2.1. Signal Generator</a></li>
+<li><a href="#orgba023c9">2.2.2. Lock-In Amplifier</a></li>
+</ul>
+</li>
+<li><a href="#org2e6e4f8">2.3. Feedback Subsystem</a>
+<ul>
+<li><a href="#org7678f9c">2.3.1. Multi-Source Setpoint Control</a></li>
+<li><a href="#org5351966">2.3.2. PID Controller</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgd86ce3a">3. AFM / SPM Setups</a>
+<ul>
+<li><a href="#org90de4bc">3.1. Contact Modes</a></li>
+<li><a href="#org46f7e98">3.2. Dynamic Modes</a>
+<ul>
+<li><a href="#orgdd3279a">3.2.1. AM-AFM - Amplitude Modulation</a></li>
+<li><a href="#orgf3f31a3">3.2.2. FM-AFM - Frequency Modulation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org1f853e4">4. Full Table of Parameters</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org239a584" class="outline-3">
-<h3 id="org239a584"><span class="section-number-3">2.2.</span> Parameters</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-org0d700a4" class="outline-2">
+<h2 id="org0d700a4"><span class="section-number-2">1.</span> Overarching Diagram</h2>
+<div class="outline-text-2" id="text-1">
+
+<div id="org719dade" class="figure">
+<p><img src="images/afm_components.png" alt="afm_components.png" width="1200" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb31a342" class="outline-2">
+<h2 id="orgb31a342"><span class="section-number-2">2.</span> Components</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org98d6e2f" class="outline-3">
+<h3 id="org98d6e2f"><span class="section-number-3">2.1.</span> Main Hardware</h3>
+<div class="outline-text-3" id="text-2-1">
+</div>
+<div id="outline-container-org8c6b0eb" class="outline-4">
+<h4 id="org8c6b0eb"><span class="section-number-4">2.1.1.</span> Cantilever Subsystem</h4>
+<div class="outline-text-4" id="text-2-1-1">
+</div>
+<div id="outline-container-orge339fdb" class="outline-5">
+<h5 id="orge339fdb"><span class="section-number-5">2.1.1.1.</span> Diagram</h5>
+<div class="outline-text-5" id="text-2-1-1-1">
+
+<div id="orge7ebd4b" class="figure">
+<p><img src="images/cantilever_subsystem.png" alt="cantilever_subsystem.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org718eeb4" class="outline-5">
+<h5 id="org718eeb4"><span class="section-number-5">2.1.1.2.</span> Parameters</h5>
+<div class="outline-text-5" id="text-2-1-1-2">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -252,30 +299,29 @@
 </thead>
 <tbody>
 <tr>
-<td class="org-left">PSPD</td>
-<td class="org-left">invOLS</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left">Cantilever</td>
+<td class="org-left"><code>cantilever_invols</code></td>
+<td class="org-left">Inverse Optical Lever Sensitivity</td>
 <td class="org-left">m/V</td>
 </tr>
-</tbody>
-<tbody>
+
 <tr>
-<td class="org-left">Cantilever</td>
 <td class="org-left">&#xa0;</td>
+<td class="org-left"><code>cantilever_k</code></td>
 <td class="org-left">Spring Constant</td>
 <td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>cantilever_f0</code></td>
 <td class="org-left">Resonant Frequency</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left">Hz</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>cantilever_q</code></td>
 <td class="org-left">Q-Factor</td>
 <td class="org-left">&#xa0;</td>
 </tr>
@@ -283,21 +329,21 @@
 <tbody>
 <tr>
 <td class="org-left">Tip-Surface</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>tip_bias_voltage</code></td>
 <td class="org-left">Tip-Surface Bias Voltage</td>
 <td class="org-left">V</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>tip_bias_amp_gain</code></td>
 <td class="org-left">Bias Amplifier Gain</td>
 <td class="org-left">V</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>tip_bias_amp_offset</code></td>
 <td class="org-left">Bias Amplifier Offset</td>
 <td class="org-left">V</td>
 </tr>
@@ -307,23 +353,24 @@
 </div>
 </div>
 
-<div id="outline-container-org2dbd4bb" class="outline-2">
-<h2 id="org2dbd4bb"><span class="section-number-2">3.</span> Scanning Subsystem</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-orgced6271" class="outline-4">
+<h4 id="orgced6271"><span class="section-number-4">2.1.2.</span> Scanning Subsystem</h4>
+<div class="outline-text-4" id="text-2-1-2">
 </div>
-<div id="outline-container-orgc0e126f" class="outline-3">
-<h3 id="orgc0e126f"><span class="section-number-3">3.1.</span> Diagram</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-org5f39cac" class="outline-5">
+<h5 id="org5f39cac"><span class="section-number-5">2.1.2.1.</span> Diagram</h5>
+<div class="outline-text-5" id="text-2-1-2-1">
 
-<div id="org2e57912" class="figure">
+<div id="org85af68c" class="figure">
 <p><img src="images/scanning_subsystem.png" alt="scanning_subsystem.png" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orge2b8b1c" class="outline-3">
-<h3 id="orge2b8b1c"><span class="section-number-3">3.2.</span> Parameters</h3>
-<div class="outline-text-3" id="text-3-2">
+
+<div id="outline-container-org83b5746" class="outline-5">
+<h5 id="org83b5746"><span class="section-number-5">2.1.2.2.</span> Parameters</h5>
+<div class="outline-text-5" id="text-2-1-2-2">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -347,21 +394,21 @@
 <tbody>
 <tr>
 <td class="org-left">Piezo</td>
-<td class="org-left">{3d}</td>
+<td class="org-left"><code>piezo_sensitivity_{3d}</code></td>
 <td class="org-left">Piezo Sensitivity</td>
 <td class="org-left">Ang/V</td>
 </tr>
 
 <tr>
-<td class="org-left">(out)</td>
-<td class="org-left">{3d}</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>piezo_amp_gain_{3d}</code></td>
 <td class="org-left">Piezo Amplifier Gain</td>
 <td class="org-left">V/V</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">{3d}</td>
+<td class="org-left"><code>piezo_amp_offset_{3d}</code></td>
 <td class="org-left">Piezo Amplifier Offset/Bias</td>
 <td class="org-left">V</td>
 </tr>
@@ -369,14 +416,14 @@
 <tbody>
 <tr>
 <td class="org-left">LVDT</td>
-<td class="org-left">{3d}</td>
+<td class="org-left"><code>lvdt_sensitivity_{3d}</code></td>
 <td class="org-left">LVDT Sensitivity</td>
 <td class="org-left">V/Ang</td>
 </tr>
 
 <tr>
-<td class="org-left">(in)</td>
-<td class="org-left">{3d}</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>lvdt_offset_{3d}</code></td>
 <td class="org-left">LVDT Offset/Bias</td>
 <td class="org-left">V</td>
 </tr>
@@ -384,56 +431,56 @@
 <tbody>
 <tr>
 <td class="org-left">Scan Params</td>
-<td class="org-left">{2d}</td>
+<td class="org-left"><code>scan_dim_{2d}</code></td>
 <td class="org-left">Maximum Scan Dimensions</td>
 <td class="org-left">m</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">{2d}</td>
+<td class="org-left"><code>scan_roi_dims_{2d}</code></td>
 <td class="org-left">Current Scan Dimensions</td>
 <td class="org-left">m</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">{2d}</td>
+<td class="org-left"><code>scan_roi_pos_{2d}</code></td>
 <td class="org-left">Current Scan Offset (x,y)</td>
 <td class="org-left">m</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">{2d}</td>
+<td class="org-left"><code>scan_origin_pos_{2d}</code></td>
 <td class="org-left">Coordinate System Origin</td>
 <td class="org-left">m</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>scan_roi_angle</code></td>
 <td class="org-left">ROI Angle (if applicable)</td>
 <td class="org-left">&deg;</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>scan_direction</code></td>
 <td class="org-left">Scan Direction</td>
 <td class="org-left">N/A</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>scanning_speed</code></td>
 <td class="org-left">Scanning Speed</td>
 <td class="org-left">m/s</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>moving_speed</code></td>
 <td class="org-left">Moving Speed (not scanning)</td>
 <td class="org-left">m/s</td>
 </tr>
@@ -442,39 +489,29 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org00dcf1d" class="outline-2">
-<h2 id="org00dcf1d"><span class="section-number-2">4.</span> Dynamic Mode Components</h2>
-<div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org4f6ca01" class="outline-3">
-<h3 id="org4f6ca01"><span class="section-number-3">4.1.</span> Lock-In Amplifier</h3>
-<div class="outline-text-3" id="text-4-1">
+<div id="outline-container-org916ba15" class="outline-3">
+<h3 id="org916ba15"><span class="section-number-3">2.2.</span> Dynamic Mode Components</h3>
+<div class="outline-text-3" id="text-2-2">
 </div>
-<div id="outline-container-orgc422f76" class="outline-4">
-<h4 id="orgc422f76"><span class="section-number-4">4.1.1.</span> Simple</h4>
-<div class="outline-text-4" id="text-4-1-1">
+<div id="outline-container-org9d37b53" class="outline-4">
+<h4 id="org9d37b53"><span class="section-number-4">2.2.1.</span> Signal Generator</h4>
+<div class="outline-text-4" id="text-2-2-1">
+</div>
+<div id="outline-container-orgaa4485c" class="outline-5">
+<h5 id="orgaa4485c"><span class="section-number-5">2.2.1.1.</span> Diagram</h5>
+<div class="outline-text-5" id="text-2-2-1-1">
 
-<div id="orgfaadf55" class="figure">
-<p><img src="images/lockin_simple.png" alt="lockin_simple.png" />
+<div id="orgaff490b" class="figure">
+<p><img src="images/signal_generator.png" alt="signal_generator.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org629dbb8" class="outline-4">
-<h4 id="org629dbb8"><span class="section-number-4">4.1.2.</span> Expanded</h4>
-<div class="outline-text-4" id="text-4-1-2">
-
-<div id="org2d7c948" class="figure">
-<p><img src="images/lockin.png" alt="lockin.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org6dd09ae" class="outline-4">
-<h4 id="org6dd09ae"><span class="section-number-4">4.1.3.</span> Parameters</h4>
-<div class="outline-text-4" id="text-4-1-3">
+<div id="outline-container-orgd250c5f" class="outline-5">
+<h5 id="orgd250c5f"><span class="section-number-5">2.2.1.2.</span> Parameters</h5>
+<div class="outline-text-5" id="text-2-2-1-2">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -497,22 +534,59 @@
 </thead>
 <tbody>
 <tr>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">Signal Amplitude</td>
-<td class="org-left">V</td>
-</tr>
-
-<tr>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">Reference Frequency</td>
+<td class="org-left">Signal Generator</td>
+<td class="org-left"><code>oscillator_f_ref</code></td>
+<td class="org-left">Oscillator reference frequency</td>
 <td class="org-left">Hz</td>
 </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 
+<div id="outline-container-orgba023c9" class="outline-4">
+<h4 id="orgba023c9"><span class="section-number-4">2.2.2.</span> Lock-In Amplifier</h4>
+<div class="outline-text-4" id="text-2-2-2">
+</div>
+<div id="outline-container-org71312d3" class="outline-5">
+<h5 id="org71312d3"><span class="section-number-5">2.2.2.1.</span> Diagram</h5>
+<div class="outline-text-5" id="text-2-2-2-1">
+
+<div id="org0c1aa44" class="figure">
+<p><img src="images/lockin.png" alt="lockin.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd59cda9" class="outline-5">
+<h5 id="orgd59cda9"><span class="section-number-5">2.2.2.2.</span> Parameters</h5>
+<div class="outline-text-5" id="text-2-2-2-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
 <tr>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<th scope="col" class="org-left">Grouping</th>
+<th scope="col" class="org-left">Parameter</th>
+<th scope="col" class="org-left">Description</th>
+<th scope="col" class="org-left">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Lock-In</td>
+<td class="org-left"><code>lockin_averaging_period</code></td>
 <td class="org-left">Averaging Period</td>
 <td class="org-left">cycles</td>
 </tr>
@@ -521,108 +595,30 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org72841b7" class="outline-3">
-<h3 id="org72841b7"><span class="section-number-3">4.2.</span> Phase Locked Loop (PLL)</h3>
-<div class="outline-text-3" id="text-4-2">
-</div>
-<div id="outline-container-orgceca967" class="outline-4">
-<h4 id="orgceca967"><span class="section-number-4">4.2.1.</span> Simple</h4>
-<div class="outline-text-4" id="text-4-2-1">
-
-<div id="org3cbd870" class="figure">
-<p><img src="images/pll_simple.png" alt="pll_simple.png" />
-</p>
-</div>
-</div>
 </div>
 
-<div id="outline-container-org2d45a05" class="outline-4">
-<h4 id="org2d45a05"><span class="section-number-4">4.2.2.</span> Expanded</h4>
-<div class="outline-text-4" id="text-4-2-2">
+<div id="outline-container-org2e6e4f8" class="outline-3">
+<h3 id="org2e6e4f8"><span class="section-number-3">2.3.</span> Feedback Subsystem</h3>
+<div class="outline-text-3" id="text-2-3">
+</div>
+<div id="outline-container-org7678f9c" class="outline-4">
+<h4 id="org7678f9c"><span class="section-number-4">2.3.1.</span> Multi-Source Setpoint Control</h4>
+<div class="outline-text-4" id="text-2-3-1">
+</div>
+<div id="outline-container-org1939718" class="outline-5">
+<h5 id="org1939718"><span class="section-number-5">2.3.1.1.</span> Diagram</h5>
+<div class="outline-text-5" id="text-2-3-1-1">
 
-<div id="orge25a9a9" class="figure">
-<p><img src="images/pll.png" alt="pll.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgad7b156" class="outline-4">
-<h4 id="orgad7b156"><span class="section-number-4">4.2.3.</span> Parameters</h4>
-<div class="outline-text-4" id="text-4-2-3">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="org-left" />
-
-<col  class="org-left" />
-
-<col  class="org-left" />
-
-<col  class="org-left" />
-</colgroup>
-<thead>
-<tr>
-<th scope="col" class="org-left">Grouping</th>
-<th scope="col" class="org-left">Parameter</th>
-<th scope="col" class="org-left">Description</th>
-<th scope="col" class="org-left">Units</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div id="outline-container-org141f059" class="outline-2">
-<h2 id="org141f059"><span class="section-number-2">5.</span> Feedback Subsystem</h2>
-<div class="outline-text-2" id="text-5">
-</div>
-<div id="outline-container-org9f25e46" class="outline-3">
-<h3 id="org9f25e46"><span class="section-number-3">5.1.</span> Source Mixer</h3>
-<div class="outline-text-3" id="text-5-1">
-</div>
-<div id="outline-container-orgb4261ba" class="outline-4">
-<h4 id="orgb4261ba"><span class="section-number-4">5.1.1.</span> Simple</h4>
-<div class="outline-text-4" id="text-5-1-1">
-
-<div id="org692fd37" class="figure">
-<p><img src="images/source_mixer_simple.png" alt="source_mixer_simple.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org7624220" class="outline-4">
-<h4 id="org7624220"><span class="section-number-4">5.1.2.</span> Expanded</h4>
-<div class="outline-text-4" id="text-5-1-2">
-
-<div id="org10f1f2a" class="figure">
+<div id="orgfe59c5a" class="figure">
 <p><img src="images/source_mixer.png" alt="source_mixer.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org5d445d5" class="outline-4">
-<h4 id="org5d445d5"><span class="section-number-4">5.1.3.</span> Parameters</h4>
-<div class="outline-text-4" id="text-5-1-3">
+<div id="outline-container-org0a423de" class="outline-5">
+<h5 id="org0a423de"><span class="section-number-5">2.3.1.2.</span> Parameters</h5>
+<div class="outline-text-5" id="text-2-3-1-2">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -646,36 +642,50 @@
 <tbody>
 <tr>
 <td class="org-left">Input</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">Conversion factor (Units-to-V)</td>
+<td class="org-left"><code>fb_input_{#}_units_to_v_factor</code></td>
+<td class="org-left">Units-to-V conversion (Input represents x as DC V)</td>
 <td class="org-left">x/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_input_{#}_gain</code></td>
+<td class="org-left">Gi: gain applied to signal i (before summing)</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_input_{#}_setpoint</code></td>
+<td class="org-left">Reference Set-Point</td>
+<td class="org-left">V</td>
 </tr>
 </tbody>
 <tbody>
 <tr>
 <td class="org-left">Low-Pass Filter</td>
-<td class="org-left">f0</td>
+<td class="org-left"><code>fb_input_{#}_low_pass_freq</code></td>
 <td class="org-left">Cut-off Frequency</td>
 <td class="org-left">Hz</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">f0<sub>min</sub></td>
+<td class="org-left"><code>fb_input_{#}_low_pass_adaptive_fmin</code></td>
 <td class="org-left">Min. F0 (if adaptive)</td>
 <td class="org-left">Hz</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">f0<sub>max</sub></td>
+<td class="org-left"><code>fb_input_{#}_low_pass_adaptive_fmax</code></td>
 <td class="org-left">Max. F0 (if adaptive)</td>
 <td class="org-left">Hz</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">I<sub>crossover</sub></td>
+<td class="org-left"><code>fb_input_{#}_low_pass_adaptive_current</code></td>
 <td class="org-left">Current Crossover (if adaptive)</td>
 <td class="org-left">A</td>
 </tr>
@@ -683,31 +693,16 @@
 <tbody>
 <tr>
 <td class="org-left">Transform</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_input_{#}_transform_mode</code></td>
 <td class="org-left">Mode: 0:Off, 1:On, 2:Log, 4:IIR, 8:FUZZY</td>
 <td class="org-left">n/a</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_input_{#}_transform_fuzzy_threshold</code></td>
 <td class="org-left">Fuzzy-Mode Threshold Level (FUZZY Only)</td>
 <td class="org-left">V</td>
-</tr>
-</tbody>
-<tbody>
-<tr>
-<td class="org-left">Miscellaneous</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">Reference Set-Point (fixed or provided by signal)</td>
-<td class="org-left">V</td>
-</tr>
-
-<tr>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">Gi: gain applied to final signal i (before summing)</td>
-<td class="org-left">&#xa0;</td>
 </tr>
 </tbody>
 </table>
@@ -715,35 +710,24 @@
 </div>
 </div>
 
-<div id="outline-container-org69c1961" class="outline-3">
-<h3 id="org69c1961"><span class="section-number-3">5.2.</span> PID Controller</h3>
-<div class="outline-text-3" id="text-5-2">
+<div id="outline-container-org5351966" class="outline-4">
+<h4 id="org5351966"><span class="section-number-4">2.3.2.</span> PID Controller</h4>
+<div class="outline-text-4" id="text-2-3-2">
 </div>
-<div id="outline-container-orgbf92c3b" class="outline-4">
-<h4 id="orgbf92c3b"><span class="section-number-4">5.2.1.</span> Simple</h4>
-<div class="outline-text-4" id="text-5-2-1">
+<div id="outline-container-orgce56100" class="outline-5">
+<h5 id="orgce56100"><span class="section-number-5">2.3.2.1.</span> Diagram</h5>
+<div class="outline-text-5" id="text-2-3-2-1">
 
-<div id="org368b295" class="figure">
-<p><img src="images/pid_simple.png" alt="pid_simple.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org5330a28" class="outline-4">
-<h4 id="org5330a28"><span class="section-number-4">5.2.2.</span> Expanded</h4>
-<div class="outline-text-4" id="text-5-2-2">
-
-<div id="orgde9cd52" class="figure">
+<div id="org57fda17" class="figure">
 <p><img src="images/pid.png" alt="pid.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgd07ccd9" class="outline-4">
-<h4 id="orgd07ccd9"><span class="section-number-4">5.2.3.</span> Parameters</h4>
-<div class="outline-text-4" id="text-5-2-3">
+<div id="outline-container-org5c08950" class="outline-5">
+<h5 id="org5c08950"><span class="section-number-5">2.3.2.2.</span> Parameters</h5>
+<div class="outline-text-5" id="text-2-3-2-2">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -766,22 +750,22 @@
 </thead>
 <tbody>
 <tr>
-<td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left">PID</td>
+<td class="org-left"><code>pid_gain_p</code></td>
 <td class="org-left">Proportional Gain</td>
 <td class="org-left">V/V</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>pid_gain_i</code></td>
 <td class="org-left">Integral Gain</td>
 <td class="org-left">V/V</td>
 </tr>
 
 <tr>
 <td class="org-left">&#xa0;</td>
-<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>pid_gain_d</code></td>
 <td class="org-left">Derivative Gain</td>
 <td class="org-left">V/V</td>
 </tr>
@@ -792,9 +776,559 @@
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgd86ce3a" class="outline-2">
+<h2 id="orgd86ce3a"><span class="section-number-2">3.</span> AFM / SPM Setups</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org90de4bc" class="outline-3">
+<h3 id="org90de4bc"><span class="section-number-3">3.1.</span> Contact Modes</h3>
+<div class="outline-text-3" id="text-3-1">
+
+<div id="orgd2ba476" class="figure">
+<p><img src="images/contact_mode.png" alt="contact_mode.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org46f7e98" class="outline-3">
+<h3 id="org46f7e98"><span class="section-number-3">3.2.</span> Dynamic Modes</h3>
+<div class="outline-text-3" id="text-3-2">
+</div>
+<div id="outline-container-orgdd3279a" class="outline-4">
+<h4 id="orgdd3279a"><span class="section-number-4">3.2.1.</span> AM-AFM - Amplitude Modulation</h4>
+<div class="outline-text-4" id="text-3-2-1">
+
+<div id="orgda7f4ae" class="figure">
+<p><img src="images/am-afm.png" alt="am-afm.png" width="1200" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf3f31a3" class="outline-4">
+<h4 id="orgf3f31a3"><span class="section-number-4">3.2.2.</span> FM-AFM - Frequency Modulation</h4>
+<div class="outline-text-4" id="text-3-2-2">
+
+<div id="orgba58005" class="figure">
+<p><img src="images/fm-afm.png" alt="fm-afm.png" width="960" />
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1f853e4" class="outline-2">
+<h2 id="org1f853e4"><span class="section-number-2">4.</span> Full Table of Parameters</h2>
+<div class="outline-text-2" id="text-4">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Subsystem</th>
+<th scope="col" class="org-left">Grouping</th>
+<th scope="col" class="org-left">Parameter</th>
+<th scope="col" class="org-left">Description</th>
+<th scope="col" class="org-left">Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Cantilever</td>
+<td class="org-left">Cantilever</td>
+<td class="org-left"><code>cantilever_invols</code></td>
+<td class="org-left">Inverse Optical Lever Sensitivity</td>
+<td class="org-left">m/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>cantilever_k</code></td>
+<td class="org-left">Spring Constant</td>
+<td class="org-left">n/a</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>cantilever_f0</code></td>
+<td class="org-left">Resonant Frequency</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>cantilever_q</code></td>
+<td class="org-left">Q-Factor</td>
+<td class="org-left">n/</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Tip-Surface</td>
+<td class="org-left"><code>tip_bias_voltage</code></td>
+<td class="org-left">Tip-Surface Bias Voltage</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>tip_bias_amp_gain</code></td>
+<td class="org-left">Bias Amplifier Gain</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>tip_bias_amp_offset</code></td>
+<td class="org-left">Bias Amplifier Offset</td>
+<td class="org-left">V</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">Scanning</td>
+<td class="org-left">Piezo</td>
+<td class="org-left"><code>piezo_sensitivity_{3d}</code></td>
+<td class="org-left">Piezo Sensitivity</td>
+<td class="org-left">Ang/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>piezo_amp_gain_{3d}</code></td>
+<td class="org-left">Piezo Amplifier Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>piezo_amp_offset_{3d}</code></td>
+<td class="org-left">Piezo Amplifier Offset/Bias</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">LVDT</td>
+<td class="org-left"><code>lvdt_sensitivity_{3d}</code></td>
+<td class="org-left">LVDT Sensitivity</td>
+<td class="org-left">V/Ang</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>lvdt_offset_{3d}</code></td>
+<td class="org-left">LVDT Offset/Bias</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Scan Params</td>
+<td class="org-left"><code>scan_dim_{2d}</code></td>
+<td class="org-left">Maximum Scan Dimensions</td>
+<td class="org-left">m</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>scan_roi_dims_{2d}</code></td>
+<td class="org-left">Current Scan Dimensions</td>
+<td class="org-left">m</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>scan_roi_pos_{2d}</code></td>
+<td class="org-left">Current Scan Offset (x,y)</td>
+<td class="org-left">m</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>scan_origin_pos_{2d}</code></td>
+<td class="org-left">Coordinate System Origin</td>
+<td class="org-left">m</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>scan_roi_angle</code></td>
+<td class="org-left">ROI Angle (if applicable)</td>
+<td class="org-left">&deg;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>scan_direction</code></td>
+<td class="org-left">Scan Direction</td>
+<td class="org-left">N/A</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>scanning_speed</code></td>
+<td class="org-left">Scanning Speed</td>
+<td class="org-left">m/s</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>moving_speed</code></td>
+<td class="org-left">Moving Speed (not scanning)</td>
+<td class="org-left">m/s</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">Main Feedback</td>
+<td class="org-left">Input</td>
+<td class="org-left"><code>fb_input_{#}_units_to_v_factor</code></td>
+<td class="org-left">Units-to-V conversion (Input represents x as DC V)</td>
+<td class="org-left">x/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_input_{#}_gain</code></td>
+<td class="org-left">Gi: gain applied to signal i (before summing)</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_input_{#}_setpoint</code></td>
+<td class="org-left">Reference Set-Point</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Low-Pass Filter</td>
+<td class="org-left"><code>fb_input_{#}_low_pass_freq</code></td>
+<td class="org-left">Cut-off Frequency</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_input_{#}_low_pass_adaptive_fmin</code></td>
+<td class="org-left">Min. F0 (if adaptive)</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_input_{#}_low_pass_adaptive_fmax</code></td>
+<td class="org-left">Max. F0 (if adaptive)</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_input_{#}_low_pass_adaptive_current</code></td>
+<td class="org-left">Current Crossover (if adaptive)</td>
+<td class="org-left">A</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Transform</td>
+<td class="org-left"><code>fb_input_transform_mode</code></td>
+<td class="org-left">Mode: 0:Off, 1:On, 2:Log, 4:IIR, 8:FUZZY</td>
+<td class="org-left">n/a</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_input_transform_fuzzy_threshold</code></td>
+<td class="org-left">Fuzzy-Mode Threshold Level (FUZZY Only)</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">PID</td>
+<td class="org-left"><code>fb_pid_gain_p</code></td>
+<td class="org-left">Proportional Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_pid_gain_i</code></td>
+<td class="org-left">Integral Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>fb_pid_gain_d</code></td>
+<td class="org-left">Derivative Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">Dynamic Mode</td>
+<td class="org-left">Signal Generator</td>
+<td class="org-left"><code>oscillator_f_ref</code></td>
+<td class="org-left">Oscillator reference frequency</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Lock-In</td>
+<td class="org-left"><code>lockin_averaging_period</code></td>
+<td class="org-left">Averaging Period</td>
+<td class="org-left">cycles</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Amplitude Feedback</td>
+<td class="org-left"><code>amp_fb_enabled</code></td>
+<td class="org-left">On/Off</td>
+<td class="org-left">n/a</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>amp_fb_input_v_to_v_factor</code></td>
+<td class="org-left">V-to-V conversion (represents V-amplitude as DC V)</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>amp_fb_input_gain</code></td>
+<td class="org-left">Gain applied to signal i</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>amp_fb_input_setpoint</code></td>
+<td class="org-left">dAmplitude Set-Point</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>amp_fb_low_pass_freq</code></td>
+<td class="org-left">Cut-off Frequency</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>amp_fb_pid_gain_p</code></td>
+<td class="org-left">Proportional Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>amp_fb_pid_gain_i</code></td>
+<td class="org-left">Integral Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>amp_fb_pid_gain_d</code></td>
+<td class="org-left">Derivative Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Phase Feedback</td>
+<td class="org-left"><code>pll_fb_enabled</code></td>
+<td class="org-left">On/Off</td>
+<td class="org-left">n/a</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>pll_fb_input_hz_to_v_factor</code></td>
+<td class="org-left">dHz-to-V conversion (represents Hz as DC V)</td>
+<td class="org-left">Hz/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>pll_fb_input_gain</code></td>
+<td class="org-left">Gain applied to signal i</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>pll_fb_input_setpoint</code></td>
+<td class="org-left">dFrequency Set-Point</td>
+<td class="org-left">V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>pll_fb_low_pass_freq</code></td>
+<td class="org-left">Cut-off Frequency</td>
+<td class="org-left">Hz</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>pll_fb_pid_gain_p</code></td>
+<td class="org-left">Proportional Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>pll_fb_pid_gain_i</code></td>
+<td class="org-left">Integral Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>pll_fb_pid_gain_d</code></td>
+<td class="org-left">Derivative Gain</td>
+<td class="org-left">V/V</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 <div id="postamble" class="status">
 <p class="author">Author: Nick Sullivan</p>
-<p class="date">Created: 2023-06-15 Thu 15:56</p>
+<p class="date">Created: 2023-06-21 Wed 19:12</p>
 </div>
 </body>
 </html>

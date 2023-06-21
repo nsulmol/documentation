@@ -2,9 +2,9 @@
  left to right direction
 
  !startsub component
- interface "<latex>S_{in[0:N]}</latex>" <<input>> as y_ts
+ interface "<latex>S_{in[0:N]}</latex>" <<input>> as s_in
 
- component "Source Mixer" as source_mixer {
+ component "Multi-Source Setpoint Control" as source_mixer {
    rectangle "\n<&layers>" as single_source_block #line:grey;line.dashed {
      rectangle "<latex>LPF_i</latex>" as lpf
      rectangle "<latex>TR_i</latex>" as tr
@@ -21,7 +21,7 @@
    }
  }
 
- y_ts --> lpf
+ s_in --> lpf
 
  storage "<latex>\textbf{\Sigma}</latex>" as sum
  interface "<latex>S_{\Delta}(t)</latex>" <<output>> as s_del
