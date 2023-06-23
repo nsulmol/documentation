@@ -2,12 +2,34 @@
 #+property: header-args :mkdirp yes :dir code :results value drawer
 #+options: h:5 toc:3
 
+# Ensure latex/pdf export creates a new page per section
+#+latex_header: \usepackage{titlesec}
+#+latex_header: \newcommand{\sectionbreak}{\clearpage}
+#+latex_header: \newcommand{\subsectionbreak}{\clearpage}
+#+latex_header: \newcommand{\subsubsectionbreak}{\clearpage}
+
+# Export in landscape mode
+#+latex_class: article
+#+latex_class_options: [landscape]
+#+latex_header: \usepackage[a4paper]{anysize}
+
 #+name: attr_fit_width
-#+begin_src sh :var data="" :var width_org_percent=80 width_html_pix=960 :results output :exports none
-  echo "#+attr_org: :width $width_org_percent%"
-  echo "#+attr_html: :width $width_html_pix"
+#+begin_src bash :var data="" :var width_percent=80 :var latex_only="" :results output :exports none
+  if ! [ $latex_only ]; then
+    echo "#+attr_org: :width $width_percent%"
+    echo "#+attr_html: :width $width_percent%"
+  fi
+  echo "#+attr_latex: :width $(bc <<< "scale=2; $width_percent/100")\linewidth"
   echo "$data"
 #+end_src
+
+#+RESULTS: attr_fit_width
+:results:
+#+attr_org: :width 80%
+#+attr_html: :width 80%
+#+attr_latex: :width .80\linewidth
+
+:end:
 
 #+begin_src plantuml :tangle code/style.puml :exports none
 <style>
@@ -41,7 +63,7 @@
 
 * Overarching Diagram
 
-#+header: :post attr_fit_width(data=*this*)
+#+header: :post attr_fit_width(data=*this*, width_percent=75)
 #+begin_src plantuml :file ../images/afm_components.png :tangle code/afm_components.puml
   !include style.puml
 
@@ -77,8 +99,9 @@
 
 #+RESULTS:
 :results:
-#+attr_org: :width 90%
-#+attr_html: :width 1200
+#+attr_org: :width 75%
+#+attr_html: :width 75%
+#+attr_latex: :width .75\linewidth
 [[file:images/afm_components.png]]
 :end:
 
@@ -86,6 +109,7 @@
 ** Main Hardware
 *** Cantilever Subsystem
 **** Diagram
+#+header: :post attr_fit_width(data=*this*, width_percent=15, latex_only=1)
 #+begin_src plantuml :file ../images/cantilever_subsystem.png :tangle code/cantilever_subsystem.puml
   !include style.puml
 
@@ -108,7 +132,12 @@
 #+end_src
 
 #+RESULTS:
+:results:
+#+attr_org: :width 15%
+#+attr_html: :width 15%
+#+attr_latex: :width .15\linewidth
 [[file:images/cantilever_subsystem.png]]
+:end:
 
 **** Parameters
 
@@ -127,6 +156,7 @@
 *** Scanning Subsystem
 **** Diagram
 
+#+header: :post attr_fit_width(data=*this*, width_percent=25, latex_only=1)
 #+begin_src plantuml :file ../images/scanning_subsystem.png :tangle code/scanning_subsystem.puml
   !include style.puml
 
@@ -170,7 +200,12 @@
 #+end_src
 
 #+RESULTS:
+:results:
+#+attr_org: :width 15%
+#+attr_html: :width 15%
+#+attr_latex: :scale .15
 [[file:images/scanning_subsystem.png]]
+:end:
 
 **** Parameters
 
@@ -196,6 +231,7 @@
 *** Signal Generator
 **** Diagram (Simple) :noexport:
 
+#+header: :post attr_fit_width(data=*this*, width_percent=10)
 #+begin_src plantuml :file ../images/signal_generator_simple.png :tangle code/signal_generator_simple.puml
   !include style.puml
 
@@ -215,10 +251,16 @@
 #+end_src
 
 #+RESULTS:
+:results:
+#+attr_org: :width 10%
+#+attr_html: :width 10%
+#+attr_latex: :scale .10
 [[file:images/signal_generator_simple.png]]
+:end:
 
 **** Diagram
 
+#+header: :post attr_fit_width(data=*this*, width_percent=33, latex_only=1)
 #+begin_src plantuml :file ../images/signal_generator.png :tangle code/signal_generator.puml
   !include style.puml
   left to right direction
@@ -246,7 +288,12 @@
 #+end_src
 
 #+RESULTS:
+:results:
+#+attr_org: :width 33%
+#+attr_html: :width 33%
+#+attr_latex: :width .33\linewidth
 [[file:images/signal_generator.png]]
+:end:
 
 **** Parameters
 
@@ -258,6 +305,7 @@
 *** Lock-In Amplifier
 **** Diagram (Simple) :noexport:
 
+#+header: :post attr_fit_width(data=*this*, width_percent=20)
 #+begin_src plantuml :file ../images/lockin_simple.png :tangle code/lockin_simple.puml
   !include style.puml
 
@@ -279,10 +327,16 @@
 #+end_src
 
 #+RESULTS:
+:results:
+#+attr_org: :width 20%
+#+attr_html: :width 20%
+#+attr_latex: :width .20\linewidth
 [[file:images/lockin_simple.png]]
+:end:
 
 **** Diagram
 
+#+header: :post attr_fit_width(data=*this*, width_percent=40, latex_only=1)
 #+begin_src plantuml :file ../images/lockin.png :tangle code/lockin.puml
   !include style.puml
   left to right direction
@@ -333,7 +387,12 @@
 #+end_src
 
 #+RESULTS:
+:results:
+#+attr_org: :width 40%
+#+attr_html: :width 40%
+#+attr_latex: :width .40\linewidth
 [[file:images/lockin.png]]
+:end:
 
 **** Parameters
 
@@ -447,6 +506,7 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
 
 **** Diagram
 
+#+header: :post attr_fit_width(data=*this*, width_percent=45, latex_only=1)
 #+begin_src plantuml :file ../images/source_mixer.png :tangle code/source_mixer.puml
   !include style.puml
   left to right direction
@@ -483,7 +543,12 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
 #+end_src
 
 #+RESULTS:
+:results:
+#+attr_org: :width 45%
+#+attr_html: :width 45%
+#+attr_latex: :width .45\linewidth
 [[file:images/source_mixer.png]]
+:end:
 
 **** Parameters
 
@@ -524,6 +589,7 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
 
 **** Diagram
 
+#+header: :post attr_fit_width(data=*this*, width_percent=45, latex_only=1)
 #+begin_src plantuml :file ../images/pid.png :tangle code/pid.puml
   !include style.puml
   left to right direction
@@ -567,7 +633,12 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
   #+end_src
 
 #+RESULTS:
+:results:
+#+attr_org: :width 45%
+#+attr_html: :width 45%
+#+attr_latex: :width .45\linewidth
 [[file:images/pid.png]]
+:end:
 
 **** Parameters
 
@@ -581,6 +652,7 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
 * AFM / SPM Setups
 ** Contact Modes
 
+#+header: :post attr_fit_width(data=*this*, width_percent=55, latex_only=1)
 #+begin_src plantuml :file ../images/contact_mode.png :tangle code/contact_mode.puml
   !include style.puml
 
@@ -597,12 +669,20 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
 #+end_src
 
 #+RESULTS:
+:results:
+#+attr_org: :width 55%
+#+attr_html: :width 55%
+#+attr_latex: :width .55\linewidth
 [[file:images/contact_mode.png]]
+:end:
+
+Approach:
+Scan over a region with a static tip, while maintaining a constant force on the tip. This is achieved by a feedback loop, where the z-height (i.e. cantilever deflection) is kept constant.
 
 ** Dynamic Modes
 *** AM-AFM - Amplitude Modulation
 
-#+header: :post attr_fit_width(data=*this*)
+#+header: :post attr_fit_width(data=*this*, width_percent=75)
 #+begin_src plantuml :file ../images/am-afm.png :tangle code/am-afm.puml
   !include style.puml
 
@@ -628,12 +708,21 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
 
 #+RESULTS:
 :results:
+#+attr_org: :width 75%
+#+attr_html: :width 75%
+#+attr_latex: :width .75\linewidth
 [[file:images/am-afm.png]]
 :end:
 
+Approach:
+Scan over a region with the tip oscillating its z-height at its resonant frequency, while maintaining the oscillation amplitude constant. This is achieved by a feedback loop, where the z-height is changed whenever the oscillation amplitude difference between the excitation signal amplitude and resonator signal amplitude varies from a desired difference.
+
+Notes:
+- The change in amplitude is due to a change in the system's resonant frequency. You can visualize this as if the amplitude/frequency curve is translating along the frequency axis. Doing so decreases the amplitude; we modify the z-height so that the system's resonant frequency is returned to its initial state (where the amplitude is maximum).
+
 *** FM-AFM - Frequency Modulation
 
-#+header: :post attr_fit_width(data=*this*)
+#+header: :post attr_fit_width(data=*this*, width_percent=85)
 #+begin_src plantuml :file ../images/fm-afm.png :tangle code/fm-afm.puml
   !include style.puml
 
@@ -698,10 +787,17 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
 
 #+RESULTS:
 :results:
-#+attr_org: :width 80%
-#+attr_html: :width 960
+#+attr_org: :width 85%
+#+attr_html: :width 85%
+#+attr_latex: :width .85\pagewidth
 [[file:images/fm-afm.png]]
 :end:
+
+Approach:
+Scan over a region with the tip oscillating its z-height at its resonant frequency, while maintaining the resonant frequency constant. This requires 3 different feedback loops:
+- The z-height feedback loop, where the z-height is changed whenever the frequency difference between excitation signal frequency and resonator signal frequency varies from a desired difference.
+- The phased lock loop component, where the excitation signal phase is changed whenever the phase difference between excitation signal phase and resonator signal phase varies from a desired difference. Since phase and frequency are intricately linked (instantaneous frequency is temporal rate of change of instantaneous phase), maintaining the phase ensures we maintain the frequency. Thus, this feedback ensures that *as the system resonant frequency changes*, we update the *excitation signal* to keep driving the system *on resonance* (i.e. the resonant signal frequency is always at the system's current resonant frequency).
+- Traditionally, there is also an amplitude feedback loop, which ensures that the amplitude of resonance is kept constant.
 
 Notes:
 - We require the PLL *and* z-height feedback because they function at different frequencies: PLL at ~100 kHz, z-height at ~1 kHz.
@@ -709,6 +805,7 @@ Notes:
 
 * Full Table of Parameters
 
+#+attr_latex: :environment longtable
 | Subsystem     | Grouping           | Parameter                                | Description                                        | Units  |
 |---------------+--------------------+------------------------------------------+----------------------------------------------------+--------|
 | Cantilever    | Cantilever         | ~cantilever_invols~                      | Inverse Optical Lever Sensitivity                  | m/V    |
