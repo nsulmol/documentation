@@ -12,7 +12,7 @@ package " " <<layout>> as li_package {
 ' Feedback aspects'
 !includesub afm_components.puml!feedback_subsystem
 note bottom of feedback_subsystem
-  Maintains z-height to keep resonant frequency constant.
+  Maintains resonant frequency constant by varying z-height.
 end note
 
 component "Amplitude Feedback" as amp_feedback {
@@ -26,7 +26,7 @@ component "Amplitude Feedback" as amp_feedback {
   amp_pid -> amp_feedback_out
 }
 note top of amp_feedback
-  Maintains AC amplitude.
+  Maintains AC amplitude constant.
 end note
 
 component "Phase Feedback" as phase_feedback {
@@ -40,7 +40,7 @@ component "Phase Feedback" as phase_feedback {
   phase_pid -> phase_feedback_out
 }
 note top of phase_feedback
-  Maintains AC frequency at current resonant frequency
+  Varies AC excitation signal so resonant is at current resonant frequency.
   ('Phase Locked Loop' component).
 end note
 

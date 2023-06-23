@@ -18,7 +18,7 @@ package " " <<layout>> as controller_logic {
   !endsub
 
   !startsub feedback_subsystem
-  component "Cantilever Feedback Subsystem" as feedback_subsystem {
+  component "Z-Height Feedback Subsystem" as feedback_subsystem {
     !includesub source_mixer_simple.puml!component
     !includesub pid_simple.puml!component
 

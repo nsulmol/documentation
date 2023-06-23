@@ -3,7 +3,7 @@
 #+options: h:5 toc:3
 
 #+name: attr_fit_width
-#+begin_src sh :var data="" :var width_org_percent=90 width_html_pix=1200 :results output :exports none
+#+begin_src sh :var data="" :var width_org_percent=80 width_html_pix=960 :results output :exports none
   echo "#+attr_org: :width $width_org_percent%"
   echo "#+attr_html: :width $width_html_pix"
   echo "$data"
@@ -63,7 +63,7 @@
     !endsub
 
     !startsub feedback_subsystem
-    component "Cantilever Feedback Subsystem" as feedback_subsystem {
+    component "Z-Height Feedback Subsystem" as feedback_subsystem {
       !includesub source_mixer_simple.puml!component
       !includesub pid_simple.puml!component
 
@@ -610,26 +610,10 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
   !includesub afm_components.puml!dynamic_mode_components
 
   ' Feedback Components '
-  package " " <<layout>> as feedback_bundle {
-    !includesub afm_components.puml!feedback_subsystem
-    note bottom of feedback_subsystem
-      Maintains z-height based on change in signal amplitude.
-    end note
-
-    component "Amplitude Feedback" as amp_feedback {
-      component "Single Source\nSetpoint Control" as amp_sp_control
-      component "PID Controller" as amp_pid
-      interface "<latex>A_{in}</latex>" <<input>> as amp_feedback_in
-      interface "<latex>dA_{out}</latex>" <<output>> as amp_feedback_out
-
-      amp_feedback_in -> amp_sp_control
-      amp_sp_control -> amp_pid
-      amp_pid -> amp_feedback_out
-    }
-    note bottom of amp_feedback
-      Maintains AC amplitude.
-    end note
-  }
+  !includesub afm_components.puml!feedback_subsystem
+  note bottom of feedback_subsystem
+    Maintains signal amplitude by varying z-height.
+  end note
 
   cs_pspd_out ..> li_u_in
   sg_si_out .u.> li_u_refi_in
@@ -639,22 +623,17 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
   li_amp_out ..> sm_s_in
   pi_u_t_out ..> cs_piezo_in: "<latex>S_i[-]</latex>"
 
-  li_amp_out ..> amp_feedback_in
-  amp_feedback_out ..> sg_amp_in
-
   li_phase_out ..> sg_phase_in
 #+end_src
 
 #+RESULTS:
 :results:
-#+attr_org: :width 90%
-#+attr_html: :width 1200
 [[file:images/am-afm.png]]
 :end:
 
 *** FM-AFM - Frequency Modulation
 
-#+header: :post attr_fit_width(data=*this*, width_org_percent="80", width_html_pix="960")
+#+header: :post attr_fit_width(data=*this*)
 #+begin_src plantuml :file ../images/fm-afm.png :tangle code/fm-afm.puml
   !include style.puml
 
@@ -670,7 +649,7 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
   ' Feedback aspects'
   !includesub afm_components.puml!feedback_subsystem
   note bottom of feedback_subsystem
-    Maintains z-height to keep resonant frequency constant.
+    Maintains resonant frequency constant by varying z-height.
   end note
 
   component "Amplitude Feedback" as amp_feedback {
@@ -684,7 +663,7 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
     amp_pid -> amp_feedback_out
   }
   note top of amp_feedback
-    Maintains AC amplitude.
+    Maintains AC amplitude constant.
   end note
 
   component "Phase Feedback" as phase_feedback {
@@ -698,7 +677,7 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
     phase_pid -> phase_feedback_out
   }
   note top of phase_feedback
-    Maintains AC frequency at current resonant frequency
+    Varies AC excitation signal so resonant is at current resonant frequency.
     ('Phase Locked Loop' component).
   end note
 
@@ -716,6 +695,18 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
   phase_feedback_out ..> sm_s_in
   pi_u_t_out ..> cs_piezo_in: "<latex>S_i[-]</latex>"
 #+end_src
+
+#+RESULTS:
+:results:
+#+attr_org: :width 80%
+#+attr_html: :width 960
+[[file:images/fm-afm.png]]
+:end:
+
+Notes:
+- We require the PLL *and* z-height feedback because they function at different frequencies: PLL at ~100 kHz, z-height at ~1 kHz.
+- So: the PLL maintains the signal on resonance *much more quickly* than the z-height maintains the resonant frequency constant.
+
 * Full Table of Parameters
 
 | Subsystem     | Grouping           | Parameter                                | Description                                        | Units  |
