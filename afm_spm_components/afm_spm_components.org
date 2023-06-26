@@ -102,7 +102,7 @@
 #+attr_org: :width 75%
 #+attr_html: :width 75%
 #+attr_latex: :width .75\linewidth
-[[file:images/afm_components.png]]
+    [[file:images/afm_components.png]]
 :end:
 
 * Components
@@ -311,11 +311,11 @@
 
   !startsub component
   component "Lock-In Amplifier" as lockin_simple
-  interface "<latex>u_{in}[\sim]</latex>" <<input>> as li_u_in
+  interface "<latex>U_{in}[\sim]</latex>" <<input>> as li_u_in
 
-  interface "<latex>u_{ref_{sin}}[\sim]</latex>" <<input>> as li_u_refi_in
-  interface "<latex>u_{ref_{cos}}[\sim]</latex>" <<input>> as li_u_refq_in
-  interface "<latex>v_{sig}[-]</latex>" <<output>> as li_amp_out
+  interface "<latex>U_{ref_{sin}}[\sim]</latex>" <<input>> as li_u_refi_in
+  interface "<latex>U_{ref_{cos}}[\sim]</latex>" <<input>> as li_u_refq_in
+  interface "<latex>V_{sig}[-]</latex>" <<output>> as li_amp_out
   interface "<latex>\varphi[-]</latex>" <<output>> as li_phase_out
 
   li_u_in --> lockin_simple
@@ -677,6 +677,7 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
 :end:
 
 Approach:
+
 Scan over a region with a static tip, while maintaining a constant force on the tip. This is achieved by a feedback loop, where the z-height (i.e. cantilever deflection) is kept constant.
 
 ** Dynamic Modes
@@ -703,6 +704,7 @@ Scan over a region with a static tip, while maintaining a constant force on the 
   li_amp_out ..> sm_s_in
   pi_u_t_out ..> cs_piezo_in: "<latex>S_i[-]</latex>"
 
+  li_amp_out ..> sg_amp_in
   li_phase_out ..> sg_phase_in
 #+end_src
 
@@ -715,6 +717,7 @@ Scan over a region with a static tip, while maintaining a constant force on the 
 :end:
 
 Approach:
+
 Scan over a region with the tip oscillating its z-height at its resonant frequency, while maintaining the oscillation amplitude constant. This is achieved by a feedback loop, where the z-height is changed whenever the oscillation amplitude difference between the excitation signal amplitude and resonator signal amplitude varies from a desired difference.
 
 Notes:
@@ -794,6 +797,7 @@ Notes:
 :end:
 
 Approach:
+
 Scan over a region with the tip oscillating its z-height at its resonant frequency, while maintaining the resonant frequency constant. This requires 3 different feedback loops:
 - The z-height feedback loop, where the z-height is changed whenever the frequency difference between excitation signal frequency and resonator signal frequency varies from a desired difference.
 - The phased lock loop component, where the excitation signal phase is changed whenever the phase difference between excitation signal phase and resonator signal phase varies from a desired difference. Since phase and frequency are intricately linked (instantaneous frequency is temporal rate of change of instantaneous phase), maintaining the phase ensures we maintain the frequency. Thus, this feedback ensures that *as the system resonant frequency changes*, we update the *excitation signal* to keep driving the system *on resonance* (i.e. the resonant signal frequency is always at the system's current resonant frequency).
