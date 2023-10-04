@@ -133,8 +133,6 @@
 
 #+RESULTS:
 :results:
-#+attr_org: :width 15%
-#+attr_html: :width 15%
 #+attr_latex: :width .15\linewidth
 [[file:images/cantilever_subsystem.png]]
 :end:
@@ -642,12 +640,13 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
 
 **** Parameters
 
-| Grouping | Parameter    | Description       | Units |
-|----------+--------------+-------------------+-------|
-| PID      | ~pid_gain_p~ | Proportional Gain | V/V   |
-|          | ~pid_gain_i~ | Integral Gain     | V/V   |
-|          | ~pid_gain_d~ | Derivative Gain   | V/V   |
-|----------+--------------+-------------------+-------|
+| Grouping | Parameter      | Description         | Units |
+|----------+----------------+---------------------+-------|
+| PID      | ~pid_gain_p~   | Proportional Gain   | V/V   |
+|          | ~pid_gain_i~   | Integral Gain       | V/V   |
+|          | ~pid_gain_d~   | Derivative Gain     | V/V   |
+|          | ~pid_ref_freq~ | Reference Frequency | Hz    |
+|----------+----------------+---------------------+-------|
 
 * AFM / SPM Setups
 ** Contact Modes
@@ -670,15 +669,17 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
 
 #+RESULTS:
 :results:
-#+attr_org: :width 55%
-#+attr_html: :width 55%
 #+attr_latex: :width .55\linewidth
 [[file:images/contact_mode.png]]
 :end:
 
 Approach:
 
-Scan over a region with a static tip, while maintaining a constant force on the tip. This is achieved by a feedback loop, where the z-height (i.e. cantilever deflection) is kept constant.
+Scan over a region with a static tip, while maintaining a constant force on the tip. This is achieved by a feedback loop, where the z-height (i.e. cantilever deflection) is kept constant. This achieves a constant-force scan.
+
+Alternatively:
+
+Set the z-height constant and scan with the feedback control off. This achieves a constant-height scan.
 
 ** Dynamic Modes
 *** AM-AFM - Amplitude Modulation
@@ -852,6 +853,7 @@ Notes:
 |               | PID                | ~fb_pid_gain_p~                          | Proportional Gain                                  | V/V    |
 |               |                    | ~fb_pid_gain_i~                          | Integral Gain                                      | V/V    |
 |               |                    | ~fb_pid_gain_d~                          | Derivative Gain                                    | V/V    |
+|               |                    | ~fb_pid_ref-freq~                        | Reference Frequency                                | Hz     |
 |---------------+--------------------+------------------------------------------+----------------------------------------------------+--------|
 | Dynamic Mode  | Signal Generator   | ~oscillator_f_ref~                       | Oscillator reference frequency                     | Hz     |
 |               |                    |                                          |                                                    |        |
