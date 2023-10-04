@@ -97,14 +97,6 @@
   }
 #+end_src
 
-#+RESULTS:
-:results:
-#+attr_org: :width 75%
-#+attr_html: :width 75%
-#+attr_latex: :width .75\linewidth
-    [[file:images/afm_components.png]]
-:end:
-
 * Components
 ** Main Hardware
 *** Cantilever Subsystem
@@ -666,12 +658,6 @@ Note: A PLL is a Lock-In amplifier + the feedback subsystem! The Phase/Amplitude
   pi_u_t_out ..> cs_piezo_in
 
 #+end_src
-
-#+RESULTS:
-:results:
-#+attr_latex: :width .55\linewidth
-[[file:images/contact_mode.png]]
-:end:
 
 Approach:
 
